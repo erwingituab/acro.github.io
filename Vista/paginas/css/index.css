@@ -77,6 +77,14 @@ body{
     flex-direction: column;    
     background: #fff;
 }
+.body-acro .nav__link--inside{       
+    display:flex;
+    justify-content: left;
+    align-items: center;       
+}
+.body-acro .nav__link--inside img{
+    margin-right: 5px;
+}
 .body-acro .nav__link--inside:hover{
     background: #f6f8fa;
 }

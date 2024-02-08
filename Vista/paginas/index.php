@@ -7,6 +7,19 @@ if ($_SESSION['active']==true) {
 	$nombre = $_SESSION['nombre'];	
 	$usuario = $_SESSION['usuario'];
 	$rol = $_SESSION['rol'];
+  $rolnombre = '';
+  if($rol==1)
+  {
+    $rolnombre = "Administrador";
+  }
+  if($rol==2)
+  {
+    $rolnombre = "Veterinario";
+  }
+  if($rol==3)
+  {
+    $rolnombre = "Productor";
+  }
 }
 else
 {
@@ -33,7 +46,7 @@ else
   <nav>
     <ul class="nav-links">      
       <li>      
-        <a href="#">usuario: <?php echo $nombre;?></a>
+        <a href="#"><?php echo $rolnombre;?>: <?php echo $nombre;?></a>
       </li>      
     </ul>
   </nav>
@@ -41,7 +54,6 @@ else
 <div class="body-acro">
 <div class="nav">
   <ul class="list">
-
     <li class="list__item">      
       <div class="list__button">
         <img src="iconos/home.svg" class="list_img">
@@ -62,39 +74,32 @@ else
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside">Finca</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Finca</a>
           </li>
-
           <li class="list__inside">
-            <a href="animales" class="nav__link nav__link--inside">Animales</a>            
-          </li>
-
-          <li class="list__inside">
-            <a href="animales" class="nav__link nav__link--inside">Ficha Clínica</a>            
-          </li>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" > Lista de Fincas</a>
+          </li>          
       </ul>
-    </li>   
-
+    </li> 
     <!--<li class="list__item">      
       <div class="list__button">
         <img src="" class="list_img">
         <a href="#" class="nav__link">Estadistica</a>
       </div>
     </li>-->
-
     <li class="list__item list__item--click">
       <div class="list__button list__button--click">
-        <img src="iconos/report.svg" class="list_img">
-        <a href="#" class="nav__link">Reportes</a>
+        <img src="iconos/table.svg" class="list_img">
+        <a href="#" class="nav__link">Tablas</a>
         <img src="iconos/arrow.svg" class="list__arrow">
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="#" class="nav__link nav__link--inside">Listado de Animales</a>
+            <a href="#" class="nav__link nav__link--inside">Eventos</a>
           </li>
           
           <li class="list__inside">
-            <a href="#" class="nav__link nav__link--inside">Ficha Clínica</a>
+            <a href="#" class="nav__link nav__link--inside">Tratamientos</a>
           </li>
       </ul>
     </li> 
