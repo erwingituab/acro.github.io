@@ -1,5 +1,4 @@
 document.getElementById('ci').focus();
-
 document.addEventListener('keypress', function(evt) 
 {
 	// Si el evento NO es una tecla Enter
@@ -85,91 +84,161 @@ function mover(event, to) {
    list.eq(index).focus();
 }
 $(document).ready(function(event) 
-{	
-	$("#submit").on("click",function(){
-		var action = 0;
-		var alertaU = document.getElementById("alert");
-		var mensajeU = document.getElementById("mensaje");
-		var strong = document.getElementById('strong')
-		//Datos a enviar
-		var ci = document.getElementById("ci").value;
-		var nombre = document.getElementById("nombre").value;
-        var apellidos = document.getElementById("apellidos").value;
-		var telefono = document.getElementById("telefono").value;
-		var direccion = document.getElementById("direccion").value;
-		var usuario = document.getElementById("usuario").value;
-		var clave = document.getElementById("clave").value;
-		var rol = document.getElementById("rol").selectedIndex;
-		if(ValidarUsuario())
-		{			
-			$.ajax({
-				url:"../../controlador/CtrlUsuario.php",
-				method:"POST",
-				data:{action:action,ci:ci,nombre:nombre,apellidos:apellidos,telefono:telefono,direccion:direccion,usuario:usuario,clave:clave,rol:rol},
-				success:function(respuesta)
-				{					
-					if (respuesta==1) 
-					{
-						alertaU.style.display = "block";
-						alertaU.style.backgroundColor="#41955D";
-						strong.innerHTML = "Éxito!";
-						mensajeU.innerHTML = "Usuario registrado.";
-						document.getElementById('frmUsuario').reset();
-						document.getElementById('ci').focus();
-						setTimeout(function() { 
-							alertaU.style.display = "none";	
-						}, 4000);
-					}
-					else{
-						console.log("Error");
-					}
-				}
-			});			
+{
+	var action = "Registrar";
+	$("#submit").val(action);	
+	$(document).on('keyup','#buscarusuario',function()
+	{
+		var valor = $($(this)).val();
+		if (valor != "") 
+		{
+			Buscar_mostrar_usuario(valor);
 		}
-	})
+		else
+		{
+			Buscar_mostrar_usuario("");
+		}
+	});
+	$(document).on('click','.update',function()
+	{		
+		var idusuario = $(this).attr("id");
+		$.ajax({
+			url: '../../controlador/CtrlUsuario.php',
+			type: 'POST',
+			data:{action:'Mostrar_datos_usuario',idusuario:idusuario},
+			success:function(respuesta)
+			{				
+				if (respuesta!=0) 
+				{
+					var usuario = $.parseJSON(respuesta);
+					$("#idusuario").val(usuario.idUsuario);
+					$("#ci").val(usuario.ci);
+					$("#nombre").val(usuario.nombre);
+					$("#apellidos").val(usuario.apellidos);
+					$("#telefono").val(usuario.telefono);
+					$("#direccion").val(usuario.direccion);					
+					$("#rol").val(usuario.rol).selectedIndex;
+					$("#usuario").val(usuario.usuario);
+					$("#estatus").val(usuario.estatusid);
+					document.getElementById("ci").select();
+					document.getElementById("ci").focus();
+					action = "Actualizar";
+					$("#submit").val(action);
+				}				
+			}
+		})
+		
+	});
+	$("#submit").on("click",function()
+	{			
+		if(ValidarUsuario())
+		{
+			if(action=="Registrar")
+			{
+				var alertaU = document.getElementById("alert");
+				var mensajeU = document.getElementById("mensaje");
+				var strong = document.getElementById('strong')
+				//Datos a enviar
+				var ci = document.getElementById("ci").value;
+				var nombre = document.getElementById("nombre").value;
+				var apellidos = document.getElementById("apellidos").value;
+				var telefono = document.getElementById("telefono").value;
+				var direccion = document.getElementById("direccion").value;
+				var usuario = document.getElementById("usuario").value;
+				var clave = document.getElementById("clave").value;
+				var rol = document.getElementById("rol").selectedIndex;
+				$.ajax({
+					url:"../../controlador/CtrlUsuario.php",
+					method:"POST",
+					data:{action:action,ci:ci,nombre:nombre,apellidos:apellidos,telefono:telefono,direccion:direccion,usuario:usuario,clave:clave,rol:rol},
+					success:function(respuesta)
+					{									
+						if (respuesta==1) 
+						{
+							Buscar_mostrar_usuario("");
+							alertaU.style.display = "block";
+							alertaU.style.backgroundColor="#41955D";
+							strong.innerHTML = "Éxito!";
+							mensajeU.innerHTML = "Usuario registrado.";
+							document.getElementById('frmUsuario').reset();
+							document.getElementById('ci').focus();
+							setTimeout(function() { 
+								alertaU.style.display = "none";	
+							}, 4000);
+						}
+						else{
+							console.log("Error");
+						}
+					}
+				});				
+			}
+			if(action=="Actualizar")
+			{				
+				var alertaU = document.getElementById("alert");
+				var mensajeU = document.getElementById("mensaje");
+				var strong = document.getElementById('strong')
+				//Datos a enviar
+				var idusuario = document.getElementById("idusuario").value;
+				var ci = document.getElementById("ci").value;
+				var nombre = document.getElementById("nombre").value;
+				var apellidos = document.getElementById("apellidos").value;
+				var telefono = document.getElementById("telefono").value;
+				var direccion = document.getElementById("direccion").value;
+				var usuario = document.getElementById("usuario").value;
+				var clave = document.getElementById("clave").value;
+				var rol = document.getElementById("rol").selectedIndex;
+				$.ajax({
+					url:"../../controlador/CtrlUsuario.php",
+					method:"POST",
+					data:{action:action,idusuario:idusuario,ci:ci,nombre:nombre,apellidos:apellidos,telefono:telefono,direccion:direccion,usuario:usuario,clave:clave,rol:rol},
+					success:function(respuesta)
+					{	
+						console.log(respuesta);				
+						if (respuesta==1) 
+						{
+							Buscar_mostrar_usuario("");
+							alertaU.style.display = "block";
+							alertaU.style.backgroundColor="#41955D";
+							strong.innerHTML = "Éxito!";
+							mensajeU.innerHTML = "Datos Actualizados.";
+							document.getElementById('frmUsuario').reset();
+							document.getElementById('ci').focus();
+							setTimeout(function() { 
+								alertaU.style.display = "none";
+								action="Actualizar";
+								$("#submit").val(action);	
+							}, 4000);
+						}
+						else{
+							console.log("Error");
+						}
+					}
+				});
+			}
+			if(action=="Eliminar")
+			{
 
-	$("#update").on("click",function(){
-		var action = 1;
-		var alertaU = document.getElementById("alert");
-		var mensajeU = document.getElementById("mensaje");
-		var strong = document.getElementById('strong')
-		//Datos a enviar
-		var idusuario = document.getElementById("idusuario").value;
-		var ci = document.getElementById("ci").value;
-		var nombre = document.getElementById("nombre").value;
-        var apellidos = document.getElementById("apellidos").value;
-		var telefono = document.getElementById("telefono").value;
-		var direccion = document.getElementById("direccion").value;
-		var usuario = document.getElementById("usuario").value;
-		var clave = document.getElementById("clave").value;
-		var rol = document.getElementById("rol").selectedIndex;
-		if(ValidarUsuario())
-		{			
-			$.ajax({
-				url:"../../controlador/CtrlUsuario.php",
-				method:"POST",
-				data:{action:action,idusuario:idusuario,ci:ci,nombre:nombre,apellidos:apellidos,telefono:telefono,direccion:direccion,usuario:usuario,clave:clave,rol:rol},
-				success:function(respuesta)
-				{					
-					if (respuesta==1) 
-					{
-						alertaU.style.display = "block";
-						alertaU.style.backgroundColor="#41955D";
-						strong.innerHTML = "Éxito!";
-						mensajeU.innerHTML = "Usuario registrado.";
-						document.getElementById('frmUsuario').reset();
-						document.getElementById('ci').focus();
-						setTimeout(function() { 
-							alertaU.style.display = "none";	
-						}, 4000);
-					}
-					else{
-						console.log("Error");
-					}
-				}
-			});			
+			}			
 		}
-	})
+		//return false;		
+	});
+	
+	Buscar_mostrar_usuario("");
+	function Buscar_mostrar_usuario(valor)
+	{		
+		$.ajax({
+			url: '../../controlador/CtrlUsuario.php',
+			type: 'POST',
+			data: {action:'Buscar_mostrar_usuario',valor:valor},
+			success:function(respuesta)
+			{
+				//console.log(respuesta);
+				if(respuesta!=0){
+					$('#usuarios').html(respuesta);
+				}
+			}
+		});
+	}
 });
 function ValidarUsuario()
 {

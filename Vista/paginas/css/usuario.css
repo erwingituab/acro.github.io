@@ -245,15 +245,15 @@
 .contenedor-form .data table tr td > a:active{
 	transform: scale(1.05);
 }
-.contenedor-form .data table tr td > a#update{
+.contenedor-form .data table tr td > a.update{
 	background-color: #ff9800;
 	border-radius: 3px;
 }
-.contenedor-form .data table tr td > a#delete{
+.contenedor-form .data table tr td > a.delete{
 	background-color: #f44336;
 	border-radius: 3px;
 }
-.contenedor-form .data table tr td > a#blocked{
+.contenedor-form .data table tr td > a.blocked{
 	background-color: #008CBA;
 	border-radius: 3px;
 }

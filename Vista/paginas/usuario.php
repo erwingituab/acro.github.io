@@ -73,23 +73,8 @@
 					<th>Status</th>
 					<th>Acción</th>
 				</thead>				
-				<tbody>	
-					<tr>
-						<td>10780686</td>
-						<td>Erwin</td>
-						<td>Apace Fabricano</td>
-						<td>73751692</td>
-						<td>Av. Petrolera km 4</td>
-						<td>Erwin</td>
-						<td>Administrador</td>
-						<td>Activo</td>
-						<td class="opciones">
-							<a id="update" title="editar"><img src="iconos/editar.svg" alt="Editar"></a>
-							<a id="delete" title="eliminar"><img src="iconos/eliminar-usr.svg" alt="Eliminar"></a>
-							<a id="blocked" title="bloquear"><img src="iconos/blocked-usr.svg" alt="Eliminar"></a>							
-						</td>
-					</tr>					
-																	
+				<tbody id="usuarios">	
+																					
 				</tbody>				
 			</table>			
 		</div>
