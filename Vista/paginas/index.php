@@ -32,10 +32,9 @@ else
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/index.css">    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>   
-    <script src="libreria/jquery/jquery.js"></script>
-    <script src="libreria/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="libreria/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libreria/sweetAlert2/css/sweetAlert2.css.css">
+    <link rel="stylesheet" href="css/index.css">   
     <title>acrhobol</title>
 </head>
 <body>
@@ -74,7 +73,7 @@ else
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Finca</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Socio Productor</a>
           </li>
           <li class="list__inside">
             <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" > Lista de Fincas</a>
@@ -144,6 +143,12 @@ else
   ?>
 </div>
 </div>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>   -->
+<script src="libreria/jquery/jquery-3.3.1.min.js"></script>
+<script src="libreria/bootstrap/js/bootstrap.min.js"></script>
+<script src="libreria/sweetAlert2/js/sweetalert2.min.js"></script>
+<script src="libreria/sweetAlert2/js/sweetalert2.all.min.js"></script>
+
 <script src="js/index.js"></script>
 </body>
 </html>

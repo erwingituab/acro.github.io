@@ -126,8 +126,119 @@ $(document).ready(function(event)
 					$("#submit").val(action);
 				}				
 			}
-		})
+		})		
+	});
+	$(document).on('click','.blocked',function(){
+
+		var idusuario = $(this).attr("id");
 		
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+			  confirmButton: "btn btn-success",
+			  cancelButton: "btn btn-danger"
+			},
+			buttonsStyling: false
+		  });
+		  swalWithBootstrapButtons.fire({
+			title: "Está seguro?",
+			text: "¡No podrás revertir esto!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Si, bloquealo!",
+			cancelButtonText: "No, cancelado!",
+			reverseButtons: true
+		  }).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: '../../controlador/CtrlUsuario.php',
+					type: 'POST',
+					data:{action:'Bloquear',idusuario:idusuario},
+					success:function(respuesta)
+					{				
+						if (respuesta!=0) 
+						{							
+							document.getElementById("ci").select();
+							document.getElementById("ci").focus();
+							action = "Registrar";
+							$("#submit").val(action);
+							Buscar_mostrar_usuario("");
+						}else{
+							console.log(respuesta);
+						}				
+					}
+				});
+			  	swalWithBootstrapButtons.fire({
+				title: "Bloqueado!",
+				text: "El usuario a sido bloqueado.",
+				icon: "success"				
+			  });
+			} else if (
+			  /* Read more about handling dismissals below */
+			  result.dismiss === Swal.DismissReason.cancel
+			) {
+			  swalWithBootstrapButtons.fire({
+				title: "Cancelado",
+				text: "El usuario esta a activo:)",
+				icon: "error"
+			  });
+			}
+		  });
+	});
+	$(document).on('click','.active',function(){
+
+		var idusuario = $(this).attr("id");
+		
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+			  confirmButton: "btn btn-success",
+			  cancelButton: "btn btn-danger"
+			},
+			buttonsStyling: false
+		  });
+		  swalWithBootstrapButtons.fire({
+			title: "Está seguro?",
+			text: "¡No podrás revertir esto!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Si, Activar usuario!",
+			cancelButtonText: "No, cancelado!",
+			reverseButtons: true
+		  }).then((result) => {
+			if (result.isConfirmed) {
+				$.ajax({
+					url: '../../controlador/CtrlUsuario.php',
+					type: 'POST',
+					data:{action:'Activar',idusuario:idusuario},
+					success:function(respuesta)
+					{				
+						if (respuesta!=0) 
+						{							
+							document.getElementById("ci").select();
+							document.getElementById("ci").focus();
+							action = "Registrar";
+							$("#submit").val(action);
+							Buscar_mostrar_usuario("");
+						}else{
+							console.log(respuesta);
+						}				
+					}
+				});
+			  	swalWithBootstrapButtons.fire({
+				title: "Activado!",
+				text: "El usuario a sido activado.",
+				icon: "success"				
+			  });
+			} else if (
+			  /* Read more about handling dismissals below */
+			  result.dismiss === Swal.DismissReason.cancel
+			) {
+			  swalWithBootstrapButtons.fire({
+				title: "Cancelado",
+				text: "El usuario esta bloqueado:)",
+				icon: "error"
+			  });
+			}
+		  });
 	});
 	$("#submit").on("click",function()
 	{			
@@ -239,6 +350,8 @@ $(document).ready(function(event)
 			}
 		});
 	}
+
+
 });
 function ValidarUsuario()
 {

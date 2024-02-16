@@ -24,7 +24,14 @@ if (isset($_POST['action'])&&$_POST['action']=="Actualizar")
 {
 	echo CtrlUsuario::Actualizar();
 }
-
+if (isset($_POST['action'])&&$_POST['action']=="Bloquear") 
+{
+	echo CtrlUsuario::Bloquear();
+}
+if (isset($_POST['action'])&&$_POST['action']=="Activar") 
+{
+	echo CtrlUsuario::Activar();
+}
 class CtrlUsuario
 {	
     static public function MostrarLogin()
@@ -90,6 +97,20 @@ class CtrlUsuario
 						"clave"		=>md5($_POST['clave']),
 						"rol"=>$_POST['rol']);
 		$respuesta = MdlUsuario::Actualizar($usuario);
+		return $respuesta;
+	}
+	static public function Bloquear()
+	{
+		require_once "../modelo/MdlUsuario.php";
+		$usuario = array("idusuario"=>$_POST['idusuario']);
+		$respuesta = MdlUsuario::Bloquear($usuario);
+		return $respuesta;
+	}
+	static public function Activar()
+	{
+		require_once "../modelo/MdlUsuario.php";
+		$usuario = array("idusuario"=>$_POST['idusuario']);
+		$respuesta = MdlUsuario::Activar($usuario);
 		return $respuesta;
 	}
 	public static function Mostrar_datos_usuario($idusuario)

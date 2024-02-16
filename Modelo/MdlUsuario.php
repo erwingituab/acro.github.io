@@ -62,6 +62,34 @@ class MdlUsuario
 		}
 		$ConexionBD->Cerrar($conexion);
 	}
+	public static function Bloquear($usuario)
+	{
+		$ConexionBD = new ConexionBD();
+		$conexion = $ConexionBD->Abrir();
+		$query = mysqli_query($conexion,"CALL sp_bloquear_usuario('".$usuario['idusuario']."')");
+		if ($query) {
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+		$ConexionBD->Cerrar($conexion);
+	}
+	public static function Activar($usuario)
+	{
+		$ConexionBD = new ConexionBD();
+		$conexion = $ConexionBD->Abrir();
+		$query = mysqli_query($conexion,"CALL sp_activar_usuario('".$usuario['idusuario']."')");
+		if ($query) {
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+		$ConexionBD->Cerrar($conexion);
+	}
 	public static function Mostrar_datos_usuario($idusuario)
 	{
 		$ConexionBD = new ConexionBD();
@@ -113,21 +141,21 @@ class MdlUsuario
 				}
 				$tabla_usuario.='
 				<td>'.$rol.'</td>
-				';
+				';				
 				if($row['status']==1)
 				{
 					$status = "Activo";
 				}
 				if($row['status']==2)
 				{
-					$status = "denegado";
+					$status = "Bloqueado";
 				}
 				$tabla_usuario.='
 				<td>'.$status.'</td>
 				<td class="opciones">					
-					<a href="#" class="update" id="'.$row['idUsuario'].'" title="editar"><img src="iconos/editar.svg" alt="Editar"></a>
-					<a href="#" class="delete" id="'.$row['idUsuario'].'" title="eliminar"><img src="iconos/eliminar-usr.svg" alt="Eliminar"></a>
-					<a href="#" class="blocked" id="'.$row['idUsuario'].'" title="bloquear"><img src="iconos/blocked-usr.svg" alt="Eliminar"></a>							
+					<a href="#" class="update" id="'.$row['idUsuario'].'" title="editar"><img src="iconos/editar.svg" alt="Editar"></a>					
+					<a href="#" class="blocked" id="'.$row['idUsuario'].'" title="bloquear"><img src="iconos/blocked-usr.svg" alt="Denegar"></a>
+					<a href="#" class="active" id="'.$row['idUsuario'].'" title="activar"><img src="iconos/usr_cheket.svg" alt="Activar"></a>						
 				</td>';			
 			}
 		}

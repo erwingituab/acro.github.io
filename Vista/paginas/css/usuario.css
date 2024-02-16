@@ -254,6 +254,10 @@
 	border-radius: 3px;
 }
 .contenedor-form .data table tr td > a.blocked{
+	background-color: #f44336;
+	border-radius: 3px;
+}
+.contenedor-form .data table tr td > a.active{
 	background-color: #008CBA;
 	border-radius: 3px;
 }
