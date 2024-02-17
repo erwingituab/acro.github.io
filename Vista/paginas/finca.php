@@ -2,46 +2,33 @@
 <div class="contenedor-form">
 	<form name="frmUsuario" method="post" id="frmUsuario">
 		<div class="titulo-frm">			
-			<h1 id="titulo">Socio</h1>
+			<h1 id="titulo">Finca</h1>
 		</div>
 		<div class="input">
-			<label for="ci">Ci</label>
+			<label for="ci">Nro. Propietario</label>
 			<input type="hidden" id="idusuario">
-			<input type="text" id="ci" placeholder="Ingrese número de carnet" tabindex="1">
+			<input type="text" id="nropropietario" placeholder="Ingrese número de carnet" tabindex="1">
 		</div>
 		<div class="input">
-			<label for="nombre">Nombre</label>
-			<input type="text" id="nombre" placeholder="Ingrese nombres" tabindex="2">
+			<label for="nombre">Propietario</label>
+			<input type="text" id="nombre" placeholder="Ingrese nombres y apellidos" tabindex="2">
 		</div>
 		<div class="input">
-			<label for="nombre">Apellidos</label>
-			<input type="text" id="apellidos" placeholder="Ingrese apellidos" tabindex="3">
+			<label for="nombre">Nro. Finca</label>
+			<input type="text" id="nrofinca" placeholder="Ingrese nro. tacho" tabindex="3">
 		</div>
 		<div class="input">
-			<label for="telefono">Teléfono</label>
-			<input type="text" id="telefono" placeholder="Ingrese numero de teléfono" tabindex="4">
+			<label for="telefono">Nombre Finca</label>
+			<input type="text" id="finca" placeholder="Ingrese nombre de finca" tabindex="4">
+		</div>
+		<div class="input">
+			<label for="direccion">Teléfono</label>
+			<input type="text" id="direccion" placeholder="Ingrese número de telefono" tabindex="5">
 		</div>
 		<div class="input">
 			<label for="direccion">Direccion</label>
-			<input type="text" id="direccion" placeholder="Ingrese una direccion" tabindex="5">
-		</div>
-		<div class="input">
-			<label for="usuario">Usuario</label>
-			<input type="text" id="usuario" placeholder="Ingrese nombre usuario" tabindex="6">
-		</div>
-		<div class="input">
-			<label for="clave">Password</label>
-			<input type="text" id="clave" placeholder="Ingrese password" tabindex="7">
-		</div>
-		<div class="input">
-			<label for="rol">Rol</label>
-			<select id="rol" tabindex="8">
-				<option value=""selected>Elija opcion</option>
-				<option value="1">Administrador</option>
-				<option value="2">Veterinario</option>
-				<option value="3">Socio</option>
-			</select>
-		</div>
+			<input type="text" id="direccion" placeholder="Ingrese una direccion" tabindex="6">
+		</div>		
 		<div class="alert" id="alert">
 			<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
 			<strong id="strong">Error!</strong><p id="mensaje" class="mensaje" ></p>
@@ -63,18 +50,28 @@
 		<div class="table">
 			<table>
 				<thead>
-					<th>Ci</th>
-					<th>Nombre</th>
-					<th>Apellidos</th>
+					<th>N° Propietario.</th>
+					<th>Nombre Propietario</th>
+					<th>N° Finca</th>
+					<th>Nombre Finca</th>
 					<th>Teléfono</th>
-					<th>Dirección</th>
-					<th>Usuario</th>
-					<th>Rol</th>
-					<th>Status</th>
+					<th>Dirección</th>				
 					<th>Acción</th>
 				</thead>				
-				<tbody id="usuarios">	
-																					
+				<tbody id="fincas">	
+					<tr>
+						<td>1</td>
+						<td>Orlando Vallejos Arnez</td>
+						<td>1</td>
+						<td>Maria Florencia</td>
+						<td>73751692</td>
+						<td>Tacata Alta</td>
+						<td class="opciones">					
+							<a href="#" class="update" id="'.$row['idUsuario'].'" title="editar"><img src="iconos/editar.svg" alt="Editar"></a>					
+							<a href="#" class="blocked" id="'.$row['idUsuario'].'" title="bloquear"><img src="iconos/blocked-usr.svg" alt="Denegar"></a>
+							<a href="#" class="active" id="'.$row['idUsuario'].'" title="activar"><img src="iconos/usr_cheket.svg" alt="Activar"></a>						
+						</td>
+					</tr>																
 				</tbody>				
 			</table>			
 		</div>
@@ -94,5 +91,5 @@
 	</div>
 </div>
 <script src="libreria/jquery/jquery.js"></script>
-<script src="js/usuario.js"></script>
+<script src="js/finca.js"></script>
 

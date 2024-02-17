@@ -33,7 +33,7 @@ else
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="libreria/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="libreria/sweetAlert2/css/sweetAlert2.css.css">
+    <link rel="stylesheet" href="libreria/sweetAlert2/css/sweetalert2.css">
     <link rel="stylesheet" href="css/index.css">   
     <title>acrhobol</title>
 </head>
@@ -51,14 +51,19 @@ else
   </nav>
 </header>  
 <div class="body-acro">
-<div class="nav">
+<?php
+if($rol==1)
+{
+  echo'
+
+  <div class="nav">
   <ul class="list">
     <li class="list__item">      
       <div class="list__button">
         <img src="iconos/home.svg" class="list_img">
         <a href="inicio" class="nav__link">Inicio</a>
       </div>
-    </li>    
+    </li>
     <li class="list__item">      
       <div class="list__button">
         <img src="iconos/usuario.svg" class="list_img">
@@ -73,19 +78,21 @@ else
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Socio Productor</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
           </li>
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" > Lista de Fincas</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
           </li>          
       </ul>
-    </li> 
+    </li>
+
     <!--<li class="list__item">      
       <div class="list__button">
         <img src="" class="list_img">
         <a href="#" class="nav__link">Estadistica</a>
       </div>
     </li>-->
+
     <li class="list__item list__item--click">
       <div class="list__button list__button--click">
         <img src="iconos/table.svg" class="list_img">
@@ -101,7 +108,8 @@ else
             <a href="#" class="nav__link nav__link--inside">Tratamientos</a>
           </li>
       </ul>
-    </li> 
+    </li>
+
     <li class="list__item list__item--click">
       <div class="list__button list__button--click">
         <img src="iconos/toro.svg" class="list_img" >
@@ -117,16 +125,141 @@ else
             <a href="finca" class="nav__link nav__link--inside">Listado de tabla de Toros</a>
           </li>          
       </ul>
-    </li> 
-    
+    </li>   
     <li class="list__item">      
       <div class="list__button">
         <img src="iconos/exit.svg" class="list_img">
         <a href="salir" class="nav__link">Salir</a>
       </div>
     </li>
-</ul>
+  </ul>
 </div>
+
+  '; 
+}
+if($rol==2)
+  {
+    echo'
+    
+    <div class="nav">
+      <ul class="list">
+        <li class="list__item">      
+          <div class="list__button">
+            <img src="iconos/home.svg" class="list_img">
+            <a href="inicio" class="nav__link">Inicio</a>
+          </div>
+        </li>        
+        <li class="list__item list__item--click">
+          <div class="list__button list__button--click">
+            <img src="iconos/archive.svg" class="list_img" >
+            <a href="#" class="nav__link">Archivos</a>
+            <img src="iconos/arrow.svg" class="list__arrow">
+          </div>
+          <ul class="list__show">
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Fincas</a>
+              </li>
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
+              </li>          
+          </ul>
+        </li>
+
+        <!--<li class="list__item">      
+          <div class="list__button">
+            <img src="" class="list_img">
+            <a href="#" class="nav__link">Estadistica</a>
+          </div>
+        </li>--> 
+        <li class="list__item list__item--click">
+          <div class="list__button list__button--click">
+            <img src="iconos/toro.svg" class="list_img" >
+            <a href="#" class="nav__link">Toros</a>
+            <img src="iconos/arrow.svg" class="list__arrow">
+          </div>
+          <ul class="list__show">
+              <li class="list__inside">
+                <a href="usuario" class="nav__link nav__link--inside">Tabla de Toros</a>
+              </li>
+
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside">Listado de tabla de Toros</a>
+              </li>          
+          </ul>
+        </li>   
+        <li class="list__item">      
+          <div class="list__button">
+            <img src="iconos/exit.svg" class="list_img">
+            <a href="salir" class="nav__link">Salir</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    ';
+  }
+  if($rol==3)
+  {
+    echo'
+    
+    <div class="nav">
+      <ul class="list">
+        <li class="list__item">      
+          <div class="list__button">
+            <img src="iconos/home.svg" class="list_img">
+            <a href="inicio" class="nav__link">Inicio</a>
+          </div>
+        </li>        
+        <li class="list__item list__item--click">
+          <div class="list__button list__button--click">
+            <img src="iconos/archive.svg" class="list_img" >
+            <a href="#" class="nav__link">Archivos</a>
+            <img src="iconos/arrow.svg" class="list__arrow">
+          </div>
+          <ul class="list__show">
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Fincas</a>
+              </li>
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
+              </li>          
+          </ul>
+        </li>
+
+        <!--<li class="list__item">      
+          <div class="list__button">
+            <img src="" class="list_img">
+            <a href="#" class="nav__link">Estadistica</a>
+          </div>
+        </li>--> 
+        <li class="list__item list__item--click">
+          <div class="list__button list__button--click">
+            <img src="iconos/toro.svg" class="list_img" >
+            <a href="#" class="nav__link">Toros</a>
+            <img src="iconos/arrow.svg" class="list__arrow">
+          </div>
+          <ul class="list__show">
+              <li class="list__inside">
+                <a href="usuario" class="nav__link nav__link--inside">Tabla de Toros</a>
+              </li>
+
+              <li class="list__inside">
+                <a href="finca" class="nav__link nav__link--inside">Listado de tabla de Toros</a>
+              </li>          
+          </ul>
+        </li>   
+        <li class="list__item">      
+          <div class="list__button">
+            <img src="iconos/exit.svg" class="list_img">
+            <a href="salir" class="nav__link">Salir</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    
+    ';
+  }
+?>
 <div class="main">
   <?php
       if(isset($_GET['pagina'])){
@@ -148,7 +281,6 @@ else
 <script src="libreria/bootstrap/js/bootstrap.min.js"></script>
 <script src="libreria/sweetAlert2/js/sweetalert2.min.js"></script>
 <script src="libreria/sweetAlert2/js/sweetalert2.all.min.js"></script>
-
 <script src="js/index.js"></script>
 </body>
 </html>
