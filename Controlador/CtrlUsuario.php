@@ -50,13 +50,13 @@ class CtrlUsuario
 			if ($respuesta['status']==1)
 			{
 				session_start();
-				$_SESSION['active']	= true;
-				$_SESSION['idUsuario'] = $respuesta['idUsuario'];
-				$_SESSION['ci'] = $respuesta['ci'];
-				$_SESSION['nombre'] = $respuesta['nombre'];
-				$_SESSION['apellidos'] = $respuesta['apellidos'];
-				$_SESSION['usuario'] = $respuesta['usuario'];
-				$_SESSION['rol'] = $respuesta['rol'];
+				$_SESSION['active']		= true;
+				$_SESSION['idUsuario'] 	= $respuesta['idUsuario'];
+				$_SESSION['ci'] 		= $respuesta['ci'];
+				$_SESSION['nombre'] 	= $respuesta['nombre'];
+				$_SESSION['apellidos'] 	= $respuesta['apellidos'];
+				$_SESSION['usuario'] 	= $respuesta['usuario'];
+				$_SESSION['rol'] 		= $respuesta['rol'];
 				return 1;
 			}
 			else 

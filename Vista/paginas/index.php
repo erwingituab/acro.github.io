@@ -1,6 +1,7 @@
 <?php 
 session_start();
-if ($_SESSION['active']==true) {
+if ($_SESSION['active']==true) 
+{
 	$saludo = "Bienvenido";
 	$idusuario = $_SESSION['idUsuario'];
 	$ci = $_SESSION['ci'];
@@ -45,7 +46,7 @@ else
   <nav>
     <ul class="nav-links">      
       <li>      
-        <a href="#"><?php echo $rolnombre;?>: <?php echo $nombre;?></a>
+        <a href="#"><?php echo $rolnombre;?>: <?php echo $nombre;?><?php echo $idusuario;?></a>
       </li>      
     </ul>
   </nav>
@@ -81,7 +82,7 @@ if($rol==1)
             <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
           </li>
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
           </li>          
       </ul>
     </li>
@@ -221,7 +222,7 @@ if($rol==2)
                 <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Fincas</a>
               </li>
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
               </li>          
           </ul>
         </li>
@@ -277,7 +278,7 @@ if($rol==2)
 </div>
 </div>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>   -->
-<script src="libreria/jquery/jquery-3.3.1.min.js"></script>
+<script src="libreria/jquery/jquery.js"></script>
 <script src="libreria/bootstrap/js/bootstrap.min.js"></script>
 <script src="libreria/sweetAlert2/js/sweetalert2.min.js"></script>
 <script src="libreria/sweetAlert2/js/sweetalert2.all.min.js"></script>
