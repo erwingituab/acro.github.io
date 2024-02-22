@@ -46,7 +46,7 @@ else
   <nav>
     <ul class="nav-links">      
       <li>      
-        <a href="#"><?php echo $rolnombre;?>: <?php echo $nombre;?><?php echo $idusuario;?></a>
+        <a href="#"><?php echo $rolnombre;?>: <?php echo $nombre;?></a>
       </li>      
     </ul>
   </nav>
@@ -82,7 +82,7 @@ if($rol==1)
             <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
           </li>
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
+            <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
           </li>          
       </ul>
     </li>
@@ -102,29 +102,35 @@ if($rol==1)
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="#" class="nav__link nav__link--inside">Eventos</a>
+            <a href="reproductor" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Toros</a>
+          </li>
+          <li class="list__inside">
+            <a href="evento" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Eventos</a>
           </li>
           
           <li class="list__inside">
-            <a href="#" class="nav__link nav__link--inside">Tratamientos</a>
+            <a href="tratamiento" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" > Tratamientos</a>
           </li>
       </ul>
     </li>
 
     <li class="list__item list__item--click">
       <div class="list__button list__button--click">
-        <img src="iconos/toro.svg" class="list_img" >
-        <a href="#" class="nav__link">Toros</a>
+        
+        <a href="#" class="nav__link"><img src="iconos/report.svg" class="list_img" > Lista</a>
         <img src="iconos/arrow.svg" class="list__arrow">
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="usuario" class="nav__link nav__link--inside">Tabla de Toros</a>
+            <a href="usuario" class="nav__link nav__link--inside"><img src="iconos/toro.svg" class="list_img" >Toros</a>
           </li>
 
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside">Listado de tabla de Toros</a>
-          </li>          
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/reportes.svg" class="list_img" >Eventos</a>
+          </li>
+          <li class="list__inside">
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/reportes.svg" class="list_img" >Tratamientos</a>
+          </li>           
       </ul>
     </li>   
     <li class="list__item">      
@@ -158,10 +164,10 @@ if($rol==2)
           </div>
           <ul class="list__show">
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Fincas</a>
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
               </li>
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Lista de Fincas</a>
+                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Fincas</a>
               </li>          
           </ul>
         </li>
@@ -219,10 +225,10 @@ if($rol==2)
           </div>
           <ul class="list__show">
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Fincas</a>
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
               </li>
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
+                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
               </li>          
           </ul>
         </li>
@@ -264,7 +270,7 @@ if($rol==2)
 <div class="main">
   <?php
       if(isset($_GET['pagina'])){
-          if($_GET['pagina']=='salir'||$_GET['pagina']=='inicio'||$_GET['pagina']=='usuario'||$_GET['pagina']=='finca'||$_GET['pagina']=='animales'){
+          if($_GET['pagina']=='salir'||$_GET['pagina']=='inicio'||$_GET['pagina']=='usuario'||$_GET['pagina']=='reproductor'||$_GET['pagina']=='evento'||$_GET['pagina']=='tratamiento'||$_GET['pagina']=='finca'||$_GET['pagina']=='fincahabilitada'||$_GET['pagina']=='animales'){
               include"".$_GET['pagina'].".php";
           }
           else{

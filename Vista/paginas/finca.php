@@ -50,7 +50,7 @@
 		<div class="table">
 			<table>
 				<thead>
-					<th>N° Propietario.</th>
+					<th>N°</th>
 					<th>Nombre Propietario</th>
 					<th>N° Finca</th>
 					<th>Nombre Finca</th>

@@ -35,6 +35,7 @@
 .contenedor-form form .input{
 	width: 100%;
 	margin-bottom: 5px;
+	text-transform: uppercase;
 }
 .contenedor-form form .input label{
 	font-family: 'Tahoma';
@@ -44,7 +45,7 @@
 	width: 100%;
 	padding: 5px 10px;
 	outline: none;
-	border: 1px solid #DDD;
+	border: 1px solid #DDD;	
 }
 .contenedor-form form .input > input:focus{
 	border: 1px solid #6B7183;
@@ -255,6 +256,10 @@
 }
 .contenedor-form .data table tr td > a.blocked{
 	background-color: #f44336;
+	border-radius: 3px;
+}
+.contenedor-form .data table tr td > a.ingresar{
+	background-color: #41955D;
 	border-radius: 3px;
 }
 .contenedor-form .data table tr td > a.active{

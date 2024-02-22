@@ -257,6 +257,8 @@ $(document).ready(function(event){
                         if (respuesta==1) 
 						{
 							Buscar_mostrar_finca("");
+							action = "Registrar";
+							$("#submit").val(action);
 							alertaU.style.display = "block";
 							alertaU.style.backgroundColor="#41955D";
 							strong.innerHTML = "Éxito!";

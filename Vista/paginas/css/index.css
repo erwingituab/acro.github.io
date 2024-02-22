@@ -61,12 +61,12 @@ body{
 .body-acro .nav__link{
     color: #303440;
     display: block;
-    padding: 15px 0;
+    padding: 10px 0;
     text-decoration: none;
 }
 .body-acro .nav__link--inside{
     border-radius: 6px;
-    padding-left: 20px;
+    padding-left: 10px;
     text-align: left;
 }
 .body-acro .list{
@@ -83,7 +83,7 @@ body{
     align-items: center;       
 }
 .body-acro .nav__link--inside img{
-    margin-right: 5px;
+    margin-right: 3px;
 }
 .body-acro .nav__link--inside:hover{
     background: #f6f8fa;

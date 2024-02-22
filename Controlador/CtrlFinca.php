@@ -15,6 +15,10 @@ if (isset($_POST['action'])&&$_POST['action']=="Buscar_mostrar_finca")
 {
 	echo CtrlFinca::Buscar_mostrar_finca($_POST['valor']);
 }
+if (isset($_POST['action'])&&$_POST['action']=="Buscar_mostrar_finca_habilitada") 
+{
+	echo CtrlFinca::Buscar_mostrar_finca_habilitada($_POST['valor']);
+}
 if (isset($_POST['action'])&& $_POST['action']=="Mostrar_datos_finca") 
 {
 	echo CtrlFinca::Mostrar_datos_finca($_POST['idfinca']);
@@ -62,6 +66,12 @@ class CtrlFinca
 	{
 		require_once "../modelo/MdlFinca.php";
 		$respuesta = MdlFinca::Buscar_mostrar_finca($valor);
+		return $respuesta;
+	}
+	public static function Buscar_mostrar_finca_habilitada($valor)
+	{
+		require_once "../modelo/MdlFinca.php";
+		$respuesta = MdlFinca::Buscar_mostrar_finca_habilitada($valor);
 		return $respuesta;
 	}
 	public static function Mostrar_datos_finca($idfinca)

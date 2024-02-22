@@ -102,4 +102,34 @@ class MdlFinca
         }
         return $tabla_finca;
     }
+    public static function Buscar_mostrar_finca_habilitada($valor)
+    {
+        $ConexionBD = new ConexionBD();
+		$conexion = $ConexionBD->Abrir();
+		$query = mysqli_query($conexion,"CALL sp_mostrar_buscar_finca('".$valor."')");
+		$resultado = mysqli_num_rows($query);
+        $tabla_finca = '';
+        if($resultado > 0)
+        {
+            while($row = $query->fetch_assoc())
+			{
+                $tabla_finca.='                
+                <tr>
+                    <td>'.$row['nroPropietario'].'</td>
+                    <td>'.$row['propietario'].'</td>
+                    <td>'.$row['nroTacho'].'</td>
+                    <td>'.$row['nombre_finca'].'</td>
+                    <td>'.$row['telefono'].'</td>
+                    <td>'.$row['direccion'].'</td>
+                    <td class="opciones">					
+                        <a href="#" class="ingresar" id="'.$row['idFinca'].'" title="editar">Ingresar <img src="iconos/institution.svg" alt="Ingresar"></a>                                               						
+                    </td>
+                </tr>            
+            ';
+            }
+        }else{
+            $tabla_finca .="<tr><td colspan='9'>No hay Datos... :(</td></tr>";
+        }
+        return $tabla_finca;
+    }
 }
