@@ -135,8 +135,7 @@ $(document).ready(function(event){
 					type: 'POST',
 					data:{action:'Eliminar',idfinca:idfinca},
 					success:function(respuesta)
-					{
-						console.log(respuesta);				
+					{							
 						if (respuesta!=0) 
 						{						
 							document.getElementById("nropropietario").focus();
@@ -274,11 +273,7 @@ $(document).ready(function(event){
 						}
                     }
                 });
-			}
-			if(action=="Eliminar")
-			{
-				
-			}
+			}			
         }
     });
 });

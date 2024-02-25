@@ -5,21 +5,22 @@
 			<h1 id="titulo">Toro</h1>
 		</div>
 		<div class="input">
-			<label for="hba">HBA</label>
-			<input type="hidden" id="idusuario">
-			<input type="text" id="hba" placeholder="Ingrese codigo HBA del toro" tabindex="1">
+			<label for="nombre">Nombre</label>
+			<input type="hidden" id="idReproductor">
+			<input type="text" id="nombre" placeholder="Ingrese nombre de toro" tabindex="1">
 		</div>
 		<div class="input">
 			<label for="apodo">Apodo</label>
-			<input type="text" id="nombre" placeholder="Ingrese apodo" tabindex="2">
+			<input type="text" id="apodo" placeholder="Ingrese apodo" tabindex="2">
 		</div>
 		<div class="input">
-			<label for="nombre">Nombre</label>
-			<input type="text" id="nombre" placeholder="Ingrese nombre de toro" tabindex="3">
-		</div>
+			<label for="hba">HBA</label>
+			<input type="hidden" id="idreproductor">
+			<input type="text" id="hba" placeholder="Ingrese codigo HBA del toro." tabindex="3">
+		</div>		
 		<div class="input">
-			<label for="rp">Registro Propio</label>
-			<input type="text" id="rp" placeholder="Ingrese numero Rp" tabindex="4">
+			<label for="rp">Codigo USA</label>
+			<input type="text" id="rp" placeholder="Ingrese codigo usa." tabindex="4">
 		</div>
 		<div class="input">
 			<label for="direccion">Codigo NAAB</label>
@@ -27,7 +28,7 @@
 		</div>		
 		<div class="input">
 			<label for="raza">Raza</label>
-			<select id="raza" tabindex="8">
+			<select id="raza" tabindex="6">
 				<option value=""selected>Elija opcion</option>
 				<option value="1">Cruzas</option>
 				<option value="2">Holstein</option>
@@ -37,7 +38,7 @@
 		</div>
         <div class="input">
 			<label for="tiposervicio">Tipo de Servicio</label>
-			<select id="tiposervicio" tabindex="9">
+			<select id="tiposervicio" tabindex="7">
 				<option value=""selected>Elija opcion</option>
 				<option value="1">Inseminacion Artificial</option>
 				<option value="2">Monta Natural</option>
@@ -49,13 +50,13 @@
 			<strong id="strong">Error!</strong><p id="mensaje" class="mensaje" ></p>
 		</div>
 		<div class="input">				
-			<input type="button" id="submit" class="button button2" value="Registrar" tabindex="9">	
+			<input type="button" id="submit" class="button button2" value="Registrar" tabindex="8">	
 		</div>			
 	</form>
 	<div class="data">		
 		<div class="buscar">		
 			<div class="input">
-				<input type="text" placeholder="Buscar usuario" id="buscarusuario"><img src="iconos/buscar.svg" alt="">
+				<input type="text" placeholder="Buscar toro" id="buscartoro"><img src="iconos/buscar.svg" alt="">
 			</div>		
 			<ul class="salida">
 				<li><a href="" class="pdf"><img src="iconos/pdf.svg" alt="pdf"></a></li>				
@@ -64,18 +65,18 @@
 		</div>
 		<div class="table">
 			<table>
-				<thead>
-					<th>HBA</th>
+				<thead>					
 					<th>NOMBRE</th>
 					<th>APODO</th>
-					<th>RAZA</th>
-					<th>RP</th>
+					<th>HBA</th>
+					<th>USA</th>				
 					<th>NAAB</th>
+					<th>RAZA</th>
 					<th>T. SERV</th>					
 					<th>Acción</th>
 				</thead>				
-				<tbody id="usuarios">	
-																					
+				<tbody id="toros">	
+					
 				</tbody>				
 			</table>			
 		</div>

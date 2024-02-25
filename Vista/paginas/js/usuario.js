@@ -17,71 +17,72 @@ document.addEventListener('keypress', function(evt)
 });
 $(function() 
 {
-  $('.input').keyup(function(e) {
-    if(e.keyCode==38)//38 para arriba
-      mover(e,-1);
-    if(e.keyCode==40)//40 para abajo
-      mover(e,1);
-  	if (e.keyCode==39) 
-  	{
-  		document.getElementById('buscarusuario').focus();
-  	}
-  	if (e.keyCode==37) 
-  	{
-  		var ci = document.getElementById('ci');
-  		var nombre = document.getElementById('nombre');
-  		var telefono = document.getElementById('telefono');
-  		var direccion = document.getElementById('direccion');
-  		var usuario = document.getElementById('usuario');
-  		var clave = document.getElementById('clave');
-  		var rol = document.getElementById('rol');
-  		if (ci.value=='')  		
-  		{
-  			ci.focus();
-  			return;
-  		}
-  		if (nombre.value=='') 
-  		{
-  			nombre.focus();
-  			return;
-  		}
-  		if (telefono.value=='') 
-  		{
-  			telefono.focus();
-  			return;
-  		}
-  		if (direccion.value=='') 
-  		{
-  			direccion.focus();
-  			return;
-  		}
-  		if (usuario.value=='') 
-  		{
-  			usuario.focus();
-  			return;
-  		}
-  		if (clave.value=='') 
-  		{
-  			clave.focus();
-  			return;
-  		}
-  		if (rol.selectedIndex==0) 
-  		{
-  			rol.focus();
-  			return;
-  		}
-  		else{
-  			document.getElementById('submit').focus();
-  			return;
-  		}
-  	}
-  });
+	$('.input').keyup(function(e) {
+		if(e.keyCode==38)//38 para arriba
+		mover(e,-1);
+		if(e.keyCode==40)//40 para abajo
+		mover(e,1);
+		if (e.keyCode==39) 
+		{
+			document.getElementById('buscarusuario').focus();
+		}
+		if (e.keyCode==37) 
+		{
+			var ci = document.getElementById('ci');
+			var nombre = document.getElementById('nombre');
+			var telefono = document.getElementById('telefono');
+			var direccion = document.getElementById('direccion');
+			var usuario = document.getElementById('usuario');
+			var clave = document.getElementById('clave');
+			var rol = document.getElementById('rol');
+			if (ci.value=='')  		
+			{
+				ci.focus();
+				return;
+			}
+			if (nombre.value=='') 
+			{
+				nombre.focus();
+				return;
+			}
+			if (telefono.value=='') 
+			{
+				telefono.focus();
+				return;
+			}
+			if (direccion.value=='') 
+			{
+				direccion.focus();
+				return;
+			}
+			if (usuario.value=='') 
+			{
+				usuario.focus();
+				return;
+			}
+			if (clave.value=='') 
+			{
+				clave.focus();
+				return;
+			}
+			if (rol.selectedIndex==0) 
+			{
+				rol.focus();
+				return;
+			}
+			else{
+				document.getElementById('submit').focus();
+				return;
+			}
+		}
+	});
 });
-function mover(event, to) {
-   let list = $('input');
-   let index = list.index($(event.target));
-   index = Math.max(0,index + to);
-   list.eq(index).focus();
+function mover(event, to) 
+{
+	let list = $('input');
+	let index = list.index($(event.target));
+	index = Math.max(0,index + to);
+	list.eq(index).focus();
 }
 $(document).ready(function(event) 
 {
@@ -313,11 +314,11 @@ $(document).ready(function(event)
 							strong.innerHTML = "Éxito!";
 							mensajeU.innerHTML = "Datos Actualizados.";
 							document.getElementById('frmUsuario').reset();
+							action="Registrar";
+							$("#submit").val(action);
 							document.getElementById('ci').focus();
 							setTimeout(function() { 
-								alertaU.style.display = "none";
-								action="Actualizar";
-								$("#submit").val(action);	
+								alertaU.style.display = "none";									
 							}, 4000);
 						}
 						else{
@@ -358,14 +359,15 @@ function ValidarUsuario()
 	var alertaU = document.getElementById("alert");
 	var mensajeU = document.getElementById("mensaje");
 	var strong = document.getElementById('strong')
-	var ci = document.getElementById("ci");
-	var nombre = document.getElementById("nombre");
-    var nombre = document.getElementById("apellidos");
-	var telefono = document.getElementById("telefono");
-	var direccion = document.getElementById("direccion");
-	var usuario = document.getElementById("usuario");
-	var clave = document.getElementById("clave");
-	var rol = document.getElementById("rol");
+	
+	var ci 			= document.getElementById("ci");
+	var nombre 		= document.getElementById("nombre");
+    var nombre 		= document.getElementById("apellidos");
+	var telefono 	= document.getElementById("telefono");
+	var direccion 	= document.getElementById("direccion");
+	var usuario 	= document.getElementById("usuario");
+	var clave 		= document.getElementById("clave");
+	var rol 		= document.getElementById("rol");
 	if (ci.value=="") 
 	{		
 		document.frmUsuario.ci.focus();

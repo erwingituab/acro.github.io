@@ -88,7 +88,6 @@
   cursor: pointer;
   transition: 0.3s;
 }
-
 /*pictureBox*/
 .prevPhoto {
     display: flex;
@@ -242,6 +241,7 @@
 	cursor: pointer;
 	padding: 3px;
 	color: #fff;
+	margin: 0px 4px 0px 0px;
 }
 .contenedor-form .data table tr td > a:active{
 	transform: scale(1.05);
@@ -304,6 +304,7 @@
 		position: absolute;
 		top: 5px;
 		left: 5px;
+		width: 100%;
 	}
 	.contenedor-form form{
 		width: 100%;
