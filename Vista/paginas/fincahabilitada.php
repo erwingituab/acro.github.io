@@ -3,7 +3,7 @@
 <div class="data">		
 		<div class="buscar">		
 			<div class="input">
-				<input type="text" placeholder="Buscar propietario o finca" id="buscarusuario"><img src="iconos/buscar.svg" alt="">
+				<input type="text" placeholder="Buscar propietario o finca" id="buscarfinca"><img src="iconos/buscar.svg" alt="">
 			</div>	
 			<p>FINCAS HABILITADAS</p>	
 			<ul class="salida">
@@ -23,6 +23,7 @@
 					<th>Acción</th>
 				</thead>				
 				<tbody id="fincas">
+					
 				</tbody>				
 			</table>			
 		</div>

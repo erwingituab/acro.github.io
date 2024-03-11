@@ -72,7 +72,7 @@ class CtrlUsuario
 	
 	static public function Registrar()
 	{
-		require_once"../modelo/MdlUsuario.php";		
+		require_once "../modelo/MdlUsuario.php";		
 		$usuario = array("ci"		=>$_POST['ci'],
 						"nombre"	=>$_POST['nombre'],
 						"apellidos"	=>$_POST['apellidos'],
@@ -86,7 +86,7 @@ class CtrlUsuario
 	}
 	static public function Actualizar()
 	{
-		require_once"../modelo/MdlUsuario.php";	
+		require_once "../modelo/MdlUsuario.php";	
 		$usuario = array("idusuario"=>$_POST['idusuario'],
 						"ci"		=>$_POST['ci'],
 						"nombre"	=>$_POST['nombre'],
@@ -95,7 +95,7 @@ class CtrlUsuario
 						"direccion"	=>$_POST["direccion"],
 						"usuario"	=>$_POST["usuario"],
 						"clave"		=>md5($_POST['clave']),
-						"rol"=>$_POST['rol']);
+						"rol"		=>$_POST['rol']);
 		$respuesta = MdlUsuario::Actualizar($usuario);
 		return $respuesta;
 	}

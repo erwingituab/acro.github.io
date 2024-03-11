@@ -72,21 +72,21 @@
 	border: 1px solid #000000;
 }
 .contenedor-form form .alert {
-	padding: 20px;
-	background-color: #f44336;
-	color: white;
-	display: none;
-	margin: 10px 0px 0px 0px;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+  display: none;
+  margin: 10px 0px 0px 0px;
 }
 .contenedor-form form .closebtn {
-	margin-left: 15px;
-	color: white;
-	font-weight: bold;
-	float: right;
-	font-size: 22px;
-	line-height: 20px;
-	cursor: pointer;
-	transition: 0.3s;
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 /*pictureBox*/
 .prevPhoto {

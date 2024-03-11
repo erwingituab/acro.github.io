@@ -12,7 +12,7 @@ document.addEventListener('keypress', function(evt)
 	// Si encontramos un elemento
 	if (next) {
 		next.focus();
-		event.preventDefault();
+		//evt.preventDefault();
 	}
 });
 $(function() 
@@ -305,7 +305,7 @@ $(document).ready(function(event)
 					data:{action:action,idusuario:idusuario,ci:ci,nombre:nombre,apellidos:apellidos,telefono:telefono,direccion:direccion,usuario:usuario,clave:clave,rol:rol},
 					success:function(respuesta)
 					{	
-						console.log(respuesta);				
+						console.log(respuesta)									
 						if (respuesta==1) 
 						{
 							Buscar_mostrar_usuario("");

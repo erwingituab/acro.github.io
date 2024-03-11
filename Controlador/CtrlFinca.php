@@ -1,4 +1,8 @@
 <?php
+if (isset($_POST['action'])&&$_POST['action']=="IngresoaFinca") 
+{
+	echo CtrlFinca::IngresoaFinca();
+}
 if (isset($_POST['action'])&&$_POST['action']=="Registrar") 
 {
 	echo CtrlFinca::CreateFinca();
@@ -25,6 +29,29 @@ if (isset($_POST['action'])&& $_POST['action']=="Mostrar_datos_finca")
 }
 class CtrlFinca
 {
+	static public function IngresoaFinca()
+	{
+		require_once "../modelo/MdlFinca.php";		
+		$Finca 	= array("idFinca"=>$_POST['idFinca']);
+		$respuesta = MdlFinca::MdlIngresoaFinca($Finca);
+		if ($respuesta != null) 
+		{		
+			session_start();
+			$_SESSION['activefinca']	= true;
+			$_SESSION['idFinca'] 		= $respuesta['idFinca'];
+			$_SESSION['nroPropietario']	= $respuesta['nroPropietario'];
+			$_SESSION['propietario'] 	= $respuesta['propietario'];
+			$_SESSION['nroTacho'] 		= $respuesta['nroTacho'];
+			$_SESSION['nombre_finca'] 	= $respuesta['nombre_finca'];
+			$_SESSION['telefono'] 		= $respuesta['telefono'];
+			$_SESSION['direccion'] 		= $respuesta['direccion'];
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
     static public function CreateFinca()
     {
 		session_start();

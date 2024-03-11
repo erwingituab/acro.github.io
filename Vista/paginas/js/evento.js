@@ -58,6 +58,8 @@ $(document).ready(function(event){
     var action = "";
     $(document).on('click','#btnmodal',function(){
         $("#exampleModalLongTitle").text("Registrar Evento");
+		document.getElementById("clave").focus();
+		document.getElementById('frmEvento').reset();
         action="Registrar";
         $("#submit").text(action);
     });
@@ -193,8 +195,7 @@ $(document).ready(function(event){
 					type: 'POST',
 					data:{action:'Eliminar',idEvento:idEvento},
 					success:function(respuesta)
-					{
-						console.log(respuesta);				
+					{								
 						if (respuesta!=0) 
 						{						
 							document.getElementById("buscarevento").focus();

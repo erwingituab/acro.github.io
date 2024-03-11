@@ -110,7 +110,7 @@ $(document).ready(function(event){
 		{
 			Buscar_mostrar_finca("");
 		}
-	});
+	});	
 	$(document).on('click','.delete',function(){
 		var idfinca = $(this).attr("id");
 		const swalWithBootstrapButtons = Swal.mixin({

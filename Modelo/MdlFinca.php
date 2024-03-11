@@ -2,6 +2,22 @@
 require_once "conexion.php";
 class MdlFinca
 {
+    public static function MdlIngresoaFinca($Finca)
+    {
+        $ConexionBD = new ConexionBD();
+		$conexion 	= $ConexionBD->Abrir();
+		$query 		= mysqli_query($conexion,"SELECT * FROM finca WHERE idFinca='".$Finca['idFinca']."'");
+		$respuesta 	= mysqli_num_rows($query);
+		if ($respuesta > 0) 
+		{
+			$finca = mysqli_fetch_assoc($query);
+			return $finca;
+		}
+		else
+		{
+			return null;
+		}
+    }
     public static function MdlCreateFinca($finca)
     {
         $ConexionBD = new ConexionBD();
