@@ -8,6 +8,10 @@ DELIMITER $$
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_activar_usuario` (`_idusuario` INT)  UPDATE usuario SET status=1 WHERE idUsuario=_idusuario$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_participante` (`_nroparticipante` INT, `_descripcion` VARCHAR(50))  INSERT INTO participante(nroparticipante,descripcion)VALUES(_nroparticipante,_descripcion)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_agregar_tratamiento` (IN `_nrotratamiento` INT, IN `_descripcion` VARCHAR(50))  INSERT INTO tratamiento(nrotratamiento,descripcion)VALUES(_nrotratamiento,_descripcion)$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_bloquear_usuario` (IN `_idusuario` INT)  UPDATE usuario SET status=2 WHERE idUsuario=_idusuario$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_animales` (IN `_idFinca` INT, IN `_valor` VARCHAR(50))  SELECT * FROM animal WHERE chb LIKE CONCAT('%', _valor, '%') AND fincaID = _idFinca$$
@@ -16,14 +20,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_finca` (`_idFinca` INT)  
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_mostrar_animal` (IN `_idAnimal` INT)  SELECT * FROM animal WHERE idAnimal=_idAnimal OR chb=_idAnimal$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_mostrar_animal_idAnimal` (`_idAnimal` INT)  SELECT * FROM animal WHERE idAnimal=_idAnimal$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_mostrar_evento` (`_valor` VARCHAR(20))  SELECT * FROM evento WHERE clave LIKE CONCAT('%', _valor, '%') OR descripcion LIKE CONCAT('%', _valor, '%') ORDER BY 4 ASC$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_mostrar_tratamiento` (`_valor` VARCHAR(10))  SELECT * FROM tratamiento WHERE nrotratamiento LIKE CONCAT('%', _valor, '%') OR descripcion LIKE CONCAT('%', _valor, '%') ORDER BY 1 DESC$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_mostrar_usuario` (IN `_valor` VARCHAR(20))  SELECT idUsuario,ci,nombre,apellidos,telefono,direccion,usuario,rol,status FROM usuario
 WHERE ci LIKE CONCAT('%', _valor, '%') OR nombre LIKE CONCAT('%', _valor, '%') OR usuario LIKE CONCAT('%', _valor, '%') AND status=1 AND status=2 ORDER BY 1 DESC$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_nrotratamiento` (`_nrotratamiento` INT)  SELECT * FROM tratamiento WHERE nrotratamiento=_nrotratamiento$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_participante` (IN `_valor` VARCHAR(50))  SELECT * FROM participante WHERE nroparticipante=_valor OR descripcion LIKE CONCAT('%', _valor, '%')$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_toro` (IN `_valor` VARCHAR(15))  SELECT * FROM reproductor WHERE apodo=_valor$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_buscar_usuario` (IN `_idUsuario` INT)  SELECT * FROM usuario WHERE idUsuario=_idusuario$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_animal` (`_chb` INT, `_fnacimiento` DATE, `_nroregistro` INT, `_categoria` INT, `_raza` INT, `_nombre` VARCHAR(50), `_rp` INT, `_chbmadre` INT, `_naabpadre` VARCHAR(12), `_FincaID` INT)  INSERT INTO animal(chb,fecha_nacimiento,nro_registro,categoria,raza,nombre,rp,chbmadre,naabpadre,fincaID)VALUES(_chb,_fnacimiento,_nroregistro,_categoria,_raza,_nombre,_rp,_chbmadre,_naabpadre,_FincaID)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_cruzamiento` (`_EventoID` INT, `_ReproductorID` INT)  INSERT INTO cruzamiento(EventoID,ReproductorID)VALUES(_EventoID,_ReproductorID)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_evento` (IN `_clave` VARCHAR(10), IN `_descripcion` VARCHAR(50), IN `_tipoevento` INT)  INSERT INTO evento(clave,descripcion,tipoevento)VALUES(_clave,_descripcion,_tipoevento)$$
 
@@ -32,6 +48,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_finca` (IN `_numero_propi
  _propietario,
  _nro_tacho,
  _nombre_finca,_telefono,_direccion,_UsuarioID)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_historia` (IN `_fecha` DATE, IN `_AnimalID` INT, IN `_EventoID` INT, IN `_TratamientoID` INT, IN `_ParticipanteID` INT)  INSERT INTO historia(fecha,animalID,eventoID,tratamientoID,participanteID)VALUES(_fecha,_AnimalID,_EventoID,_TratamientoID,_ParticipanteID)$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_parto` (IN `_nroparto` INT, IN `_tipo` INT, IN `_sexo` INT, IN `_chbcria` INT, IN `_peso` FLOAT, IN `_EventoID` INT)  INSERT INTO parto(nroparto,tipo,sexo,chbcria,peso,EventoID)
+VALUES(_nroparto,_tipo,_sexo,_chbcria,_peso,_EventoID)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_create_reproductor` (`_hba` INT, `_apodo` VARCHAR(50), `_nombre` VARCHAR(50), `_rp` INT, `_naab` VARCHAR(50), `_raza` INT, `_tiposervicio` INT)  INSERT INTO reproductor(hba,apodo,nombre,rp,naab,raza,tiposervicio)VALUES(_hba,_apodo,_nombre,_rp,_naab,_raza,_tiposervicio)$$
 
@@ -55,7 +76,19 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_buscar_reproductor` (IN 
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_datos_evento` (IN `_idEvento` INT)  SELECT * FROM evento WHERE idEvento=_idEvento$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_evento` (IN `_valor` VARCHAR(2))  SELECT * FROM evento WHERE idEvento LIKE CONCAT('%', _valor, '%') OR clave LIKE CONCAT('%', _valor, '%')$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_partos` (`_chb` INT)  SELECT h.idHIstoria,DATE_FORMAT(h.fecha,'%d/%m/%Y')'fecha',e.descripcion 'evento',pa.tipo,pa.nroparto,pa.sexo,pa.chbcria,t.descripcion 'tratamiento',p.descripcion 'participante' FROM historia h JOIN animal a ON h.animalID=a.idAnimal
+JOIN evento e ON h.eventoID=e.idEvento JOIN tratamiento t ON h.tratamientoID=t.idTratamiento
+JOIN participante p ON h.participanteID=p.idParticipante JOIN parto pa ON pa.EventoID=e.idEvento
+WHERE a.chb=_chb GROUP BY h.idHIstoria ORDER BY h.fecha ASC$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_reproductor` (`_idReproductor` INT)  SELECT * FROM reproductor WHERE idReproductor=_idReproductor$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_mostrar_servicios` (`_chb` INT)  SELECT h.idHIstoria,DATE_FORMAT(h.fecha,'%d/%m/%Y')'fecha',e.descripcion 'evento',t.descripcion 'tratamiento',p.descripcion 'participante',r.apodo 'reproductor' FROM historia h JOIN animal a ON h.animalID=a.idAnimal
+JOIN evento e ON h.eventoID=e.idEvento JOIN tratamiento t ON h.tratamientoID=t.idTratamiento
+JOIN participante p ON h.participanteID=p.idParticipante JOIN cruzamiento c ON c.EventoID=e.idEvento JOIN reproductor r ON c.ReproductorID=r.idReproductor
+WHERE a.chb=_chb GROUP BY h.idHIstoria ORDER BY h.fecha ASC$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_update_animal` (`_idAnimal` INT, `_chb` INT, `_fnacimiento` DATE, `_nroregistro` INT, `_categoria` INT, `_raza` INT, `_nombre` VARCHAR(50), `_rp` INT, `_chbmadre` INT, `_naabpadre` VARCHAR(12), `_FincaID` INT)  UPDATE animal SET chb=_chb,fecha_nacimiento=_fnacimiento,nro_registro=_nroregistro,categoria=_categoria,raza=_raza,nombre=_nombre,rp=_rp,chbmadre=_chbmadre,naabpadre=_naabpadre
 WHERE idAnimal=_idAnimal$$
@@ -688,7 +721,545 @@ INSERT INTO `animal` (`idAnimal`, `chb`, `fecha_nacimiento`, `nro_registro`, `ca
 (592, 539227, '2023-10-07', 63899, 1, 2, 'C-NiÃ±o-610-Tomas-275', 610, 204424, 'TOMAS', 0, 6),
 (593, 539233, '2023-10-09', 65596, 4, 2, 'C-NiÃ±o-611-Arturo-176', 611, 222831, 'ARTURO', 0, 6),
 (594, 539253, '2023-11-20', 64322, 1, 2, 'C-NiÃ±o-612-bANJOp-507', 612, 414343, '7HO14694', 0, 6),
-(595, 539254, '2023-12-01', 64331, 1, 2, 'C.NiÃ±o-613-House-524', 613, 474858, '7HO12978', 0, 6);
+(595, 539254, '2023-12-01', 64331, 1, 2, 'C.NiÃ±o-613-House-524', 613, 474858, '7HO12978', 0, 6),
+(596, 414397, '2018-10-02', 0, 4, 2, 'SanJulian-Liz', 0, 0, '0', 0, 16),
+(597, 414404, '2018-07-13', 0, 4, 2, 'SanJulian-Pura', 0, 0, '0', 0, 16),
+(598, 414406, '2017-05-20', 0, 4, 2, 'SanJulian-Mariana', 0, 0, '0', 0, 16),
+(599, 414409, '2019-01-15', 0, 4, 2, 'SanJulian-Griselda', 0, 0, '0', 0, 16),
+(600, 414416, '2018-07-16', 0, 4, 2, 'SanJulian-Fernanda', 0, 0, '0', 0, 16),
+(601, 414417, '2018-06-27', 0, 4, 2, 'SanJulian-Juanita', 0, 0, '0', 0, 16),
+(602, 414424, '2021-03-15', 0, 4, 2, 'SanJulian-Roxana', 0, 0, '0', 0, 16),
+(603, 414426, '2019-02-15', 0, 4, 2, 'SanJulian-Carina', 0, 0, '0', 0, 16),
+(604, 414433, '2020-02-10', 0, 4, 2, 'SanJulian-Brenda', 0, 0, '0', 0, 16),
+(605, 414435, '2018-07-18', 0, 4, 2, 'SanJulian-Gaby', 0, 0, '0', 0, 16),
+(606, 414438, '2020-02-10', 0, 4, 2, 'SanJulian-Erika', 0, 0, '0', 0, 16),
+(607, 414441, '2019-03-15', 0, 4, 2, 'SanJulian-Danitza', 0, 0, '0', 0, 16),
+(608, 414443, '2019-12-01', 0, 4, 2, 'SanJulian-Briza', 0, 0, '0', 0, 16),
+(609, 414444, '2020-02-20', 0, 4, 2, 'SanJulian-Teresa', 0, 0, '0', 0, 16),
+(610, 414445, '2019-11-30', 0, 4, 2, 'SanJulian-Bertha', 0, 0, '0', 0, 16),
+(611, 414448, '2018-08-30', 0, 4, 2, 'SanJulian-Marisol', 0, 0, '0', 0, 16),
+(612, 474806, '2020-05-18', 0, 4, 2, 'SanJulian-Candy', 0, 0, '0', 0, 16),
+(613, 474808, '2020-09-16', 0, 4, 2, 'SanJulian-Litzy', 0, 0, '0', 0, 16),
+(614, 474810, '2020-06-01', 0, 4, 2, 'SanJulian-Noemi', 0, 0, '0', 0, 16),
+(615, 474811, '2020-04-15', 62927, 1, 2, 'SanJulian-Camila-Mabon-Carina', 0, 414426, '7HO12829', 0, 16),
+(616, 474812, '2020-07-14', 62903, 4, 2, 'SanJulian-Marina', 0, 0, '0', 0, 16),
+(617, 474813, '2020-11-10', 0, 4, 2, 'SanJulian-Jeny', 0, 0, '0', 0, 16),
+(618, 474815, '2020-10-21', 0, 4, 2, 'SanJulian-Gaviota', 0, 0, '0', 0, 16),
+(619, 474816, '2020-04-01', 0, 4, 2, 'SanJulian-Mariela', 0, 0, '0', 0, 16),
+(620, 474817, '2020-08-28', 0, 4, 2, 'SanJulian-Lucero', 0, 0, '0', 0, 16),
+(621, 474818, '2020-12-27', 0, 4, 2, 'SanJulian-Belen', 0, 414407, '0', 0, 16),
+(622, 474819, '2020-06-24', 0, 4, 2, 'SanJulian-Angela', 0, 0, '0', 0, 16),
+(623, 474821, '2021-06-01', 0, 4, 2, 'SanJulian-Cristina', 0, 0, '0', 0, 16),
+(624, 474822, '2021-05-03', 62915, 1, 2, 'SanJulian-Amalia-Ascender-Andreita', 0, 414425, '7HO12616', 0, 16),
+(625, 474823, '2021-05-16', 62916, 1, 2, 'SanJulian-Celina-Rozwell-Celeste', 0, 414411, '7HO12777', 0, 16),
+(626, 474825, '2021-05-17', 62917, 1, 2, 'SanJulian-Gringa-Mabon-Grisela', 0, 414409, '7HO12829', 0, 16),
+(627, 474826, '2020-12-25', 62909, 1, 2, 'SanJulian-Alexa-Ascender-Alely', 0, 414415, '7HO12616', 0, 16),
+(628, 474827, '2021-01-18', 0, 4, 2, 'SanJulian-Feli', 0, 0, '0', 0, 16),
+(629, 474829, '2021-04-19', 62913, 1, 2, 'SanJulian-Perla-Ascender-Pilar', 0, 414413, '7HO12616', 0, 16),
+(630, 474830, '2020-01-19', 0, 4, 2, 'SanJulian-Chatita', 0, 0, '0', 0, 16),
+(631, 474831, '2021-03-03', 62912, 1, 2, 'SanJulian-Mayte-Ascender-Mayra', 474831, 414420, '7HO12616', 0, 16),
+(632, 474832, '2021-06-12', 62921, 1, 2, 'SanJulian-Prima-Ascender-Pura', 474832, 414404, '7HO12616', 0, 16),
+(633, 474833, '2021-06-17', 62925, 1, 2, 'SanJulian-Sole-Ascender-Sofia', 474833, 414427, '7HO12616', 0, 16),
+(634, 474834, '2020-03-15', 0, 4, 2, 'SanJulian-Nicol', 0, 0, '0', 0, 16),
+(635, 474835, '2020-06-15', 0, 4, 2, 'SanJulian-Blanki', 0, 0, '0', 0, 16),
+(636, 474836, '2020-07-15', 0, 4, 2, 'SanJulian-Lucy', 0, 0, '0', 0, 16),
+(637, 474861, '2021-10-09', 62942, 1, 3, 'SanJulian-Olivia-Megapower-Olenka', 0, 414440, '7JE5011', 0, 16),
+(638, 474862, '2021-11-05', 62846, 4, 2, 'SanJulian-Valentina', 0, 0, '0', 0, 16),
+(639, 474863, '2021-10-28', 0, 4, 2, 'SanJulian-Luna', 0, 474838, '0', 0, 16),
+(640, 474865, '2021-09-01', 62935, 1, 2, 'SanJulian-Lilian-CrownRed-Lili', 0, 222936, '7HO14460', 0, 16),
+(641, 474866, '2021-12-06', 63014, 1, 3, 'SanJulian-Daniela-Megapower-Danitza', 0, 414441, '7JE2011', 0, 16),
+(642, 474867, '2021-12-11', 63013, 1, 3, 'SanJulian-Nilda-Megapower-Noelia', 0, 414421, '7JE5011', 0, 16),
+(643, 474868, '2020-10-25', 62932, 1, 2, 'SanJulian-Marlen-Ascender-Martha', 0, 414428, '7HO12616', 0, 16),
+(644, 474959, '2022-02-08', 0, 4, 2, 'SanJulian-Lety', 0, 474836, '0', 0, 16),
+(645, 474969, '2022-05-02', 62985, 1, 2, 'SanJulian-Belen-Ascender-Betty', 0, 414423, '7HO12616', 0, 16),
+(646, 474970, '2022-05-05', 62981, 1, 2, 'SanJulian-Techi-Ascender-Teresa', 0, 414444, '7HO12616', 0, 16),
+(647, 475000, '2022-04-18', 62984, 1, 2, 'SanJulian-Lina-Advance-Liz', 0, 414397, '7HO12868', 0, 16),
+(648, 503861, '2022-12-20', 63038, 1, 2, 'SanJulian-Soraya-Jules-Sonia', 0, 474820, '7HO15002', 0, 16),
+(649, 503908, '2023-01-22', 63046, 1, 2, 'SanJulian-Galina-Jules-Gaby', 0, 414435, '7HO15002', 0, 16),
+(650, 503918, '2023-03-08', 63051, 1, 2, 'SanJulian-Lupita-Ascender-Luciana', 0, 414396, '7HO12616', 0, 16),
+(651, 521817, '2022-05-24', 62990, 1, 2, 'SanJulian-Celia-Ascender-Celeste', 0, 414411, '7HO12616', 0, 16),
+(652, 521863, '2022-08-10', 63005, 1, 2, 'SanJulian-Tati-Ascender-Tati', 0, 414398, '7HO12616', 0, 16),
+(653, 521864, '2022-08-14', 63006, 1, 2, 'SanJulian-Galya-Ascender-Gabriela', 0, 774920, '7HO12616', 0, 16),
+(654, 521885, '2022-08-20', 63010, 1, 3, 'SanJulian-Oriana-Fournette-Olga', 0, 204485, '7JE1600', 0, 16),
+(655, 521922, '2022-09-23', 0, 4, 2, 'SanJulian-Bonita', 0, 474835, '0', 0, 16),
+(656, 521931, '2022-10-19', 63018, 1, 2, 'SanJulian-Carol-Tomek-Camila', 0, 474811, '7HO12657', 0, 16),
+(657, 521975, '2022-11-01', 63024, 1, 2, 'SanJulian-Barbi-Taos-Blanca', 0, 414436, '7HO15112', 0, 16),
+(658, 521976, '2022-11-04', 63026, 1, 2, 'SanJulian-Gris-Tomek-Griselda', 0, 414409, '7HO12657', 0, 16),
+(659, 521977, '2022-12-06', 63037, 1, 2, 'SanJulian-Pili-Tomek-Pilar', 0, 414413, '7HO12657', 0, 16),
+(660, 539049, '2022-02-14', 0, 4, 2, 'SanJulian-Gilda', 0, 0, '0', 0, 16),
+(661, 539050, '2023-05-08', 63061, 1, 2, 'SanJulian-Gloria-Tomek-Gaviota', 0, 474815, '7HO12657', 0, 16),
+(662, 539051, '2023-05-08', 63059, 1, 3, 'SanJulian-Jerusa-Megapower-Jeny', 0, 474813, '7JE5011', 0, 16),
+(663, 539134, '2021-06-10', 0, 4, 2, 'SanJulian-Asly', 0, 0, '0', 0, 16),
+(664, 539150, '2023-08-01', 63078, 1, 3, 'SanJulian-Ofelia-Megapower-Olga', 0, 204485, '7JE5011', 0, 16),
+(665, 539243, '2023-10-26', 63096, 1, 2, 'SanJulian-Paki-LightMyFire-Perla', 0, 474829, '250HO12879', 0, 16),
+(666, 539252, '2023-12-14', 65714, 1, 3, 'SanJulian-Dalila-Megapower-Danitza', 0, 414441, '7JE5011', 0, 16),
+(667, 204404, '2016-08-06', 0, 4, 2, 'Tapia-Jade', 0, 0, '0', 0, 14),
+(668, 230362, '2016-11-22', 0, 4, 2, 'Tapia-Chaska', 0, 0, '0', 0, 14),
+(669, 230364, '2016-07-19', 0, 4, 2, 'Tapia-Macla', 0, 0, '0', 0, 14),
+(670, 230367, '2017-04-20', 0, 4, 2, 'Tapia-Ana', 0, 0, '0', 0, 14),
+(671, 272735, '2017-08-12', 54339, 4, 2, 'Tapia-Mery', 0, 230347, '0', 0, 14),
+(672, 272762, '2015-05-15', 0, 4, 2, 'Tapia-Cody-Freddy-Cony', 0, 0, '0', 0, 14),
+(673, 272885, '2018-02-03', 54306, 1, 2, 'Tapia-Mozita-RudolphRed-Monserrat', 0, 230326, '7HO11497', 0, 14),
+(674, 277182, '2018-04-02', 54396, 4, 2, 'Tapia-Lenci', 0, 230343, '0', 0, 14),
+(675, 279366, '2018-07-09', 54346, 1, 2, 'Tapia-Martha-RudolphRed-MuÃ±eca', 0, 230339, '7HO11497', 0, 14),
+(676, 279406, '2018-07-10', 54337, 1, 2, 'Tapia-Celia-Wonka-Perla', 0, 230350, '7HO12175', 0, 14),
+(677, 283055, '2015-01-08', 0, 4, 2, 'Tapia-Janeth', 0, 0, '0', 0, 14),
+(678, 315903, '2018-12-15', 54383, 1, 2, 'Tapia-Jesica-Reynold-Fede', 0, 283053, '7HO12150', 0, 14),
+(679, 315906, '2019-01-06', 0, 4, 2, 'Tapia-Aracely', 0, 283087, '0', 0, 14),
+(680, 318406, '2019-03-02', 55903, 1, 2, 'Tapia-Leticia-Doctor-Uruguaya', 0, 230320, '250HO11953', 0, 14),
+(681, 318450, '2019-04-02', 55916, 1, 2, 'Tapia-Erika-Doctor-Emilia', 0, 230358, '250HO11953', 0, 14),
+(682, 474912, '2019-04-29', 55924, 1, 2, 'Tapia-Patricia-Beecher-Pocha', 0, 230366, '7HO12043', 0, 14),
+(683, 347983, '2016-10-11', 0, 4, 2, 'Tapia-Pancha', 0, 0, '0', 0, 14),
+(684, 347984, '2016-10-11', 0, 4, 2, 'Tapia-Julieta', 0, 0, '0', 0, 14),
+(685, 348042, '2019-08-29', 55942, 1, 2, 'Tapia-Justina-KingPin-Ana', 0, 230367, '7HO12726', 0, 14),
+(686, 348053, '2019-07-09', 55994, 4, 2, 'Tapia-Albina', 0, 774789, '0', 0, 14),
+(687, 348054, '2019-08-06', 55995, 4, 2, 'Tapia-Josefa', 0, 204404, '0', 0, 14),
+(688, 368773, '2019-11-02', 55958, 1, 2, 'Tapia-Fabiola-Mitch-Fede', 0, 283053, '7HO11767', 0, 14),
+(689, 368774, '2019-11-09', 55959, 1, 2, 'Tapia-Hilaria-Braxton-Hilda', 0, 272916, '7HO9165', 0, 14),
+(690, 368775, '2019-11-16', 0, 4, 2, 'Tapia-Stefani', 0, 774912, '0', 0, 14),
+(691, 368776, '2019-11-23', 0, 4, 2, 'Tapia-Mrina', 0, 272733, '0', 0, 14),
+(692, 368852, '2020-01-20', 59141, 4, 2, 'Tapia-Marisol', 0, 368872, '0', 0, 14),
+(693, 368871, '2020-02-06', 55970, 1, 2, 'Tapia-Nelci-Sterling-Nancy', 0, 230355, '7HO11585', 0, 14),
+(694, 368900, '2017-02-26', 0, 4, 2, 'Tapia-Peni', 0, 0, '0', 0, 14),
+(695, 368902, '2020-03-08', 55973, 1, 2, 'Tapia-Dora-Sterling-Maria', 0, 230347, '7HO11585', 0, 14),
+(696, 414010, '2020-09-22', 59125, 1, 2, 'Tapia-Brenda-Scenario-Fede', 0, 283053, '7HO12615', 0, 14),
+(697, 414011, '2020-10-08', 59139, 1, 2, 'Tapia-Mirian-CrownRed-Steph', 0, 230369, '7HO14460', 0, 14),
+(698, 414012, '2020-10-12', 59130, 1, 2, 'Tapia-Leydi-CrownRed-Luz', 0, 279441, '7HO14460', 0, 14),
+(699, 414094, '2020-12-20', 59145, 1, 2, 'Tapia-Carolian-CrownRed-Chaska', 0, 230362, '7HO14460', 0, 14),
+(700, 414095, '2020-12-28', 59148, 1, 2, 'Tapia-Vicenta-CrownRed-Micaela', 0, 431173, '7HO14460', 0, 14),
+(701, 414157, '2021-01-21', 59197, 1, 2, 'Tapia-Dominga-Butler-Nicole', 0, 431172, '7HO12195', 0, 14),
+(702, 414183, '2021-02-20', 59199, 1, 2, 'Tapia-Valentina-Reflector-Maria', 0, 230347, '7HO12105', 0, 14),
+(703, 414259, '2021-05-14', 59170, 1, 2, 'Tapia-Vanesa-CrownRed-Dolores', 0, 279440, '7HO14460', 0, 14),
+(704, 414361, '2021-07-18', 59180, 1, 2, 'Tapia-MuÃ±eca-Headliner-Mozita', 0, 272885, '7HO11419', 0, 14),
+(705, 414362, '2021-07-08', 59188, 1, 2, 'Tapia-Celina-CrownRed-Celia', 0, 279406, '7HO14460', 0, 14),
+(706, 414369, '2021-08-17', 59200, 4, 2, 'Tapia-Marlene', 0, 368773, '0', 0, 14),
+(707, 431021, '2020-04-12', 55996, 1, 2, 'Tapia-Isabel-Sterling-Naida', 0, 368901, '7HO11585', 0, 14),
+(708, 431128, '2020-05-11', 59101, 1, 2, 'Tapia-Luciana-Sterling-Linda', 0, 272829, '7HO11585', 0, 14),
+(709, 431169, '2020-07-30', 59113, 1, 2, 'Tapia-Yovana-Butler-Jade', 0, 204404, '7HO12195', 0, 14),
+(710, 431170, '2020-08-18', 59117, 1, 2, 'Tapia-Elena-KingPin-Jake', 0, 230353, '7HO12228', 0, 14),
+(711, 431173, '2017-09-10', 54342, 4, 2, 'Tapia-Micaela', 0, 230315, '0', 0, 14),
+(712, 431174, '2018-06-02', 54331, 1, 2, 'Tapia-Dina-RudolphRed-Lupe', 0, 230346, '7HO11497', 0, 14),
+(713, 431175, '2020-07-10', 55296, 1, 2, 'Tapia-Florencia-Sterling-Ignacia', 0, 272763, '7HO11585', 0, 14),
+(714, 474844, '2021-10-13', 60008, 1, 2, 'Tapia-Fernanda-LusterP-Cody', 0, 272762, '7HO14160', 0, 14),
+(715, 474855, '2021-11-27', 60027, 1, 2, 'Tapia-Carmen-CrownRed-Nancy', 0, 230355, '7HO14460', 0, 14),
+(716, 474870, '2021-11-30', 60029, 1, 2, 'Tapia-Tomek-Sdenka', 0, 774912, '7HO12657', 0, 14),
+(717, 474891, '2021-12-13', 60033, 1, 2, 'Tapia-Madelin-Ascender-Pocha', 0, 230366, '7HO12616', 0, 14),
+(718, 474967, '2022-03-13', 60061, 1, 2, 'Tapia-MariaFernanda-Bradnick-Josefina', 0, 431176, '7HO10999', 0, 14),
+(719, 490245, '2015-09-15', 0, 4, 2, 'Tapia-Nancy', 0, 0, '0', 0, 14),
+(720, 490249, '2017-03-21', 0, 4, 2, 'Tapia-Pocha', 0, 0, '0', 0, 14),
+(721, 503862, '2022-12-15', 63531, 1, 2, 'Tapia-Moly-RompenRed-Mozita', 0, 272885, '7HO15427', 0, 14),
+(722, 503863, '2023-01-07', 63538, 1, 2, 'Tapia-Adriana-RompenRed-Valentina', 0, 414183, '7HO15427', 0, 14),
+(723, 521797, '2022-07-08', 63564, 1, 2, 'Tapia-Juana-Pharo-Julieta', 0, 347984, '250HO12975', 0, 14),
+(724, 521816, '2022-06-14', 60080, 1, 2, 'Tapia-Teresa-LusterP-Abril', 0, 283087, '7HO14160', 0, 14),
+(725, 521883, '2022-09-04', 60096, 1, 2, 'Tapia-Paty-RompenRed-Hilaria', 0, 368774, '7HO15427', 0, 14),
+(726, 521884, '2022-09-16', 60099, 1, 2, 'Tapia-Diana-Talon-Janeth', 0, 283055, '7HO15457', 0, 14),
+(727, 521958, '2022-11-20', 63505, 1, 2, 'Tapia-Lisbet-RompenRed-Leydi', 0, 414012, '7HO15427', 0, 14),
+(728, 521959, '2022-11-25', 63520, 1, 2, 'Tapia-Luna-RompenRed-Lupe', 0, 230346, '7HO15427', 0, 14),
+(729, 521961, '2022-12-09', 63529, 1, 2, 'Tapia-Merlina-RompenRed-Mery', 0, 272735, '7HO15427', 0, 14),
+(730, 539020, '2023-04-14', 63562, 1, 2, 'Tapia-Santusa-Tomek-MuÃ±eca', 0, 414361, '7HO12657', 0, 14),
+(731, 539080, '2023-06-03', 63567, 1, 2, 'Tapia-Sol-RainyRed-Dina', 0, 431174, '250HO15316', 0, 14),
+(732, 539113, '2023-06-19', 63571, 1, 2, 'Tapia-Coral-RickPRed-Cody', 0, 272762, '7HO15017', 0, 14),
+(733, 539114, '2023-06-20', 63573, 1, 2, 'Tapia-Jesabel-RainyRed-Yovana', 0, 431169, '250HO15316', 0, 14),
+(734, 539115, '2023-07-10', 63570, 1, 2, 'Tapia-Magui-Talon-Martha', 0, 279366, '7HO15457', 0, 14),
+(735, 539116, '2023-07-12', 63579, 1, 2, 'Tapia-Josefina-RainyRed-Peni', 0, 368900, '250HO15316', 0, 14),
+(736, 539130, '2023-08-05', 62662, 4, 2, 'Tapia-Maribel', 0, 414369, '0', 0, 14),
+(737, 539152, '2024-01-09', 65626, 1, 2, 'Tapia-Dolores-Alphabet-Dominga', 0, 414157, '7HO14320', 0, 14),
+(738, 539242, '2023-12-04', 65624, 1, 2, 'Tapia-Blanca-Alpahbet-Justina', 0, 348042, '7HO14320', 0, 14),
+(739, 539273, '2023-12-24', 0, 4, 2, 'Tapia-Sylphy', 0, 474967, '0', 0, 14),
+(740, 539274, '2023-12-26', 65619, 1, 2, 'Tapia-Ariel-RainyRed-Marisol', 0, 368852, '250HO15316', 0, 14),
+(741, 539275, '2024-01-02', 65622, 1, 2, 'Tapia-Cielo-LightMyDire-Janeth', 0, 283055, '250HO12879', 0, 14),
+(742, 539276, '2024-01-04', 65625, 1, 2, 'Tapia-Yermana-Alphabet-Pancha', 0, 347983, '7HO14320', 0, 14),
+(743, 539277, '2024-01-09', 65628, 1, 2, 'Tapia-Gabi-Alphabet-Marina', 0, 368776, '7HO14320', 0, 14),
+(744, 278557, '2017-11-17', 0, 4, 2, 'Merida-Malena', 0, 0, '0', 0, 13),
+(745, 278578, '2013-03-16', 0, 4, 2, 'Merida-Petisa', 0, 0, '0', 0, 13),
+(746, 278579, '2014-04-07', 0, 4, 2, 'Merida-Carla', 0, 0, '0', 0, 13),
+(747, 279348, '2015-08-01', 0, 4, 2, 'Merida-Virginia', 0, 0, '0', 0, 13),
+(748, 279362, '2018-03-21', 0, 1, 2, 'Merida-Nelly-Kenyon-Petisa', 0, 278578, '7HO12769', 0, 13),
+(749, 315959, '2019-01-16', 56304, 1, 2, 'Merida-Puka-RagerRed-Cristy', 0, 279341, '7HO12344', 0, 13),
+(750, 318502, '2019-09-15', 56334, 1, 2, 'Merida-Laura-KingTut-Isidra', 0, 279351, '7HO12726', 0, 13),
+(751, 347938, '2019-05-20', 56315, 1, 2, 'Merida-Zulma-Kenyon-Virginia', 0, 279348, '7HO12769', 0, 13),
+(752, 347989, '2019-06-14', 56320, 1, 2, 'Merida-Frecia-Kenyon-Petisa', 0, 278578, '7HO12769', 0, 13),
+(753, 347990, '2019-06-14', 56321, 1, 2, 'Merida-Claudia-KingTutu-Mariela', 0, 279343, '7HO12726', 0, 13),
+(754, 347991, '2019-06-15', 56318, 1, 2, 'Merida-Camila-Kenyon-Carla', 0, 278579, '7HO12769', 0, 13),
+(755, 414107, '2021-01-03', 56372, 1, 2, 'Merida-Mary-Butler-Marisol', 0, 279421, '7HO12195', 0, 13),
+(756, 414248, '2021-04-20', 56381, 1, 2, 'Merida-Maya-LusterP-Martha', 0, 279358, '7HO14160', 0, 13),
+(757, 414334, '2021-07-12', 56393, 1, 2, 'Merida-Alita-Headliner-Luna', 0, 431105, '7HO11419', 0, 13),
+(758, 414335, '2021-08-02', 56395, 1, 2, 'Merida-Lupe-BanjoP-Camila', 0, 347991, '7HO14694', 0, 13),
+(759, 414489, '2021-10-16', 61405, 1, 2, 'Merida-Milka-Loyalty-Cristina', 0, 16102021, '509HO12690', 0, 13),
+(760, 431105, '2019-01-22', 0, 4, 2, 'Merida-Luna', 0, 0, '0', 0, 13),
+(761, 431113, '2020-06-05', 56350, 4, 2, 'Merida-Blanca-Doc-Petisa', 0, 278578, '250HO12961', 0, 13),
+(762, 431252, '2020-09-15', 56362, 1, 2, 'Merida-Kochala-Butler-Mallku', 0, 278581, '7HO12195', 0, 13),
+(763, 474972, '2022-02-10', 61423, 1, 2, 'Merida-Rutila-Cascade-Malena', 0, 278557, '7HO14401', 0, 13),
+(764, 521753, '2022-04-20', 61428, 1, 2, 'Merida-Awita-Cascade-Petra', 0, 348064, '7HO14401', 0, 13),
+(765, 521800, '2022-06-11', 61434, 1, 2, 'Merida-Dulce-Spartacus-Luna', 0, 431105, '7HO14674', 0, 13),
+(766, 521801, '2022-06-21', 61435, 1, 2, 'Merida-Lupita-RompenRed-Puka', 0, 315959, '7HO15427', 0, 13),
+(767, 521802, '2022-07-01', 61436, 1, 2, 'Merida-Nena-RustyRed-Nelly', 0, 279362, '7HO13826', 0, 13),
+(768, 521855, '2022-08-01', 61442, 1, 2, 'Merida-Bella-RompenRed-Camila', 0, 347991, '7HO15427', 0, 13),
+(769, 521966, '2022-11-22', 61449, 4, 4, 'Merida-Pili-August-Olivia', 0, 368861, '507BS5826', 0, 13),
+(770, 521967, '2022-11-22', 614449, 4, 4, 'Merida-Mili-August-Olivia', 0, 368861, '507BS5826', 0, 13),
+(771, 539028, '2023-04-23', 61469, 1, 2, 'Merida-Lina-RickPRed-Lala', 0, 431145, '7HO15017', 0, 13),
+(772, 539029, '2023-05-03', 61473, 4, 2, 'Merida-Belinda-Magellan-Blanca', 0, 431113, '7AY121', 0, 13),
+(773, 539063, '2023-05-22', 61476, 4, 4, 'Merida-Luzma-Discovery-Laura', 0, 3184502, '9BS925', 0, 13),
+(774, 539090, '2023-03-17', 61478, 4, 4, 'Merida-Discovery-Malena', 0, 278557, '9BS925', 0, 13),
+(775, 539203, '2023-09-08', 61483, 1, 4, 'Merida-Cielo-Discovery-Camila', 0, 347991, '9BS925', 0, 13),
+(776, 539204, '2023-09-17', 61489, 1, 2, 'Merida-Linda-RainyRed-Lupe', 0, 414335, '250HO15316', 0, 13),
+(777, 230232, '2013-11-30', 0, 4, 2, 'Cardozo-Juana', 0, 0, '0', 0, 8),
+(778, 230244, '2016-10-31', 0, 1, 2, 'Cardozo-Celia-Braxton-Rosario', 0, 230227, '7HO9165', 0, 8),
+(779, 230245, '2016-08-27', 0, 1, 2, 'Cardozo-Cirila-Brisco-Julia', 0, 230226, '7HO10908', 0, 8),
+(780, 230246, '2016-03-12', 0, 1, 2, 'Cardozo-Rosa-Defender-Patricia', 0, 230233, '7HO11926', 0, 8),
+(781, 230248, '2016-09-12', 0, 1, 2, 'Cardozo-Flor-Matt-Chela', 0, 230229, '7JE1344', 0, 8),
+(782, 230252, '2017-04-27', 0, 1, 3, 'Cardozo-Reina-Antidote-Cocacola', 0, 230228, '7JE1131', 0, 8),
+(783, 230253, '2017-05-28', 0, 1, 2, 'Cardozo-Lucy-Taillight-Constantina', 0, 230224, '7HO11591', 0, 8),
+(784, 277241, '2018-04-17', 54017, 1, 2, 'Cardozo-Monica-Wonka-Patricia', 0, 230233, '7HO12175', 0, 8),
+(785, 277242, '2018-04-26', 54022, 1, 3, 'Cardozo-Meche-Calypso-Domi', 0, 230237, '7JE1350', 0, 8),
+(786, 277265, '2018-05-14', 54023, 1, 2, 'Cardozo-Mariel-RagerRed-Choca', 0, 230236, '7HO12344', 0, 8),
+(787, 279378, '2018-06-20', 54025, 1, 2, 'Cardozo-Erlinda-Gamma-Victoria', 0, 230240, '7HO12723', 0, 8),
+(788, 279379, '2018-06-22', 54026, 1, 2, 'Cardozo-Wilma-Heisemberg-Miki', 0, 230225, '7HO12569', 0, 8),
+(789, 283052, '2018-10-21', 54031, 1, 2, 'Cardozo-Jorgina-Chrome-Rosa', 0, 230246, '7HO12464', 0, 8),
+(790, 283057, '2018-11-24', 54036, 1, 2, 'Cardozo-Grace-Kenyon-Flor', 0, 230248, '7HO12769', 0, 8),
+(791, 318404, '2019-01-20', 54037, 1, 2, 'Cardozo-Erika-Heisemberg-Juana', 0, 230232, '7HO12569', 0, 8),
+(792, 347931, '2019-06-04', 54050, 1, 2, 'Cardozo-Lucia-Kingtut-Romalda', 0, 230234, '7HO12726', 0, 8),
+(793, 348086, '2019-09-23', 54063, 1, 2, 'Cardozo-Luciana-Chrome-Miky', 0, 230225, '7HO12464', 0, 8),
+(794, 368767, '2019-11-19', 54066, 1, 2, 'Cardozo-Adriana-Kenyon-Celia', 0, 230244, '7HO12769', 0, 8),
+(795, 414119, '2021-01-26', 54089, 1, 2, 'Cardozo-Salome-Butler-Susi', 0, 230243, '7HO12195', 0, 8),
+(796, 414360, '2021-08-04', 61009, 1, 2, 'Cardozo-Emilia-BanjoP-Erika', 0, 318404, '7HO14694', 0, 8),
+(797, 414367, '2021-08-04', 61014, 1, 3, 'Cardozo-Reyli-Albion-Meche', 0, 277242, '7JE1620', 0, 8),
+(798, 414368, '2021-08-13', 61011, 1, 2, 'Cardozo-Bonifacia-Bradnick-Camila', 0, 13082021, '7HO10999', 0, 8),
+(799, 431092, '2020-02-10', 54075, 1, 2, 'Cardozo-Mary-Bradnick-Julia', 0, 230226, '7HO10999', 0, 8),
+(800, 431093, '2020-02-29', 54076, 1, 2, 'Cardozo-Fernanda-Bradnick-Juana', 0, 230232, '7HO10999', 0, 8),
+(801, 431162, '2020-06-15', 54084, 1, 2, 'Cardozo-Iris-Doc-Romalda', 0, 230234, '250HO12961', 0, 8),
+(802, 431232, '2020-06-07', 54082, 1, 3, 'Cardozo-Janeth-Barnabas-Domi', 0, 230237, '7JE1294', 0, 8),
+(803, 474852, '2021-11-12', 611017, 1, 2, 'Cardozo-Marlen-LusterP-Mariel', 0, 277265, '7HO14160', 0, 8),
+(804, 490240, '2023-05-31', 61070, 1, 3, 'Cardozo-Jimena-SalsaP-Janeth', 0, 431232, '7JE1474', 0, 8),
+(805, 521710, '2022-04-24', 61044, 1, 2, 'Cardozo-Natalia-Megapower-Janeth', 0, 431232, '7HO8778', 0, 8),
+(806, 521742, '2022-05-19', 61032, 1, 2, 'Cardozo-Giovana-Hancock-Grace', 0, 283057, '250HO14579', 0, 8),
+(807, 521751, '2022-05-21', 61031, 1, 2, 'Cardozo-Flora-Captivating-Fernanda', 0, 431093, '250HO15156', 0, 8),
+(808, 521767, '2022-05-30', 61035, 1, 2, 'Cardozo-Magui-Advance-Monica', 0, 277241, '7HO12868', 0, 8),
+(809, 521793, '2022-06-27', 61006, 1, 2, 'Cardozo-Evarista-Mabon-Flor', 0, 230248, '7HO12829', 0, 8),
+(810, 521886, '2023-03-02', 61057, 1, 2, 'Cardozo-Marcela-RainyRed-Mariel', 0, 277265, '250HO15316', 0, 8),
+(811, 521887, '2022-10-03', 61048, 1, 2, 'Cardozo-Retama-Captivating-Cirila', 0, 230245, '250HO15156', 0, 8),
+(812, 521913, '2022-10-03', 61046, 1, 2, 'Cardozo-Casandra-RompenRed-Rosa', 0, 230246, '7HO15427', 0, 8),
+(813, 539033, '2023-04-23', 61064, 1, 2, 'Cardozo-Leny-Zamboni-Lucy', 0, 230353, '7HO12837', 0, 8),
+(814, 539236, '2023-10-28', 61081, 1, 2, 'Cardozo-Cinda-BanjoP-Cirila', 0, 230245, '7HO14694', 0, 8),
+(815, 539237, '2023-10-29', 61078, 1, 2, 'Cardozo-Maya-Sunrise-Monica', 0, 277241, '7HO15225', 0, 8),
+(816, 272767, '2015-04-08', 0, 4, 2, 'Marisol-Mandy-Freddy-Morita', 0, 0, '0', 0, 15),
+(817, 272768, '2010-03-22', 0, 4, 2, 'Marisol-Colorina-PradokerRed-Chocolina', 0, 0, '0', 0, 15),
+(818, 272770, '2014-02-25', 0, 4, 2, 'Marisol-Belinda-Lazarith-Blanca', 0, 0, '0', 0, 15),
+(819, 272773, '2015-03-07', 0, 4, 2, 'Marisol-Clois-Freddy-Claris', 0, 0, '0', 0, 15),
+(820, 272803, '2017-08-27', 0, 4, 2, 'Marisol-Micaela-Bolt-Mimi', 0, 0, '0', 0, 15),
+(821, 272804, '2017-07-23', 0, 4, 2, 'Marisol-Pria-Piranha-Paris', 0, 272765, '0', 0, 15),
+(822, 272917, '2017-12-12', 55222, 4, 2, 'Marisol-Bahia-Piranha-Baby', 0, 272781, '0', 0, 15),
+(823, 279409, '2018-07-27', 55209, 1, 2, 'Marisol-Prisma-Payoffred-Popis', 0, 272769, '1HO11616', 0, 15),
+(824, 283058, '2018-10-22', 552191, 1, 2, 'Marisol-Lety-Beecher-Leonar', 0, 272778, '7HO12043', 0, 15),
+(825, 347940, '2019-06-05', 55235, 1, 2, 'Marisol-Kenosha-Cristal', 0, 272795, '7HO12773', 0, 15),
+(826, 347994, '2019-06-25', 55242, 1, 2, 'Marisol-Mady-Kingtutu-Mady', 0, 272767, '7HO12726', 0, 15),
+(827, 348063, '2019-08-08', 55248, 1, 2, 'Marisol-Clony-Kenosha-Clois', 0, 272773, '7HO12773', 0, 15),
+(828, 368750, '2019-11-18', 55256, 1, 2, 'Marisol-Lina-Braxton-Laydi', 0, 272772, '7HO9165', 0, 15),
+(829, 368751, '2019-11-29', 55259, 1, 2, 'Marisol-Bryna-Braxton-Bryana', 0, 272792, '7HO9165', 0, 15),
+(830, 368891, '2020-01-27', 55264, 1, 2, 'Marisol-Levy-Bradnick-Leny', 0, 272805, '7HO10999', 0, 15),
+(831, 368892, '2020-01-31', 55265, 1, 2, 'Marisol-Leo-Doc-Leonor', 0, 272778, '250HO12961', 0, 15),
+(832, 368894, '2020-01-22', 58211, 4, 2, 'Marisol-Lincy-Bradnick-Lindaura', 0, 0, '7HO10999', 0, 15),
+(833, 414031, '2020-07-01', 0, 4, 2, 'Marisol-Sandy-Reflector-Silvia', 0, 0, '7HO12105', 0, 15),
+(834, 414032, '2020-07-21', 0, 4, 2, 'Marisol-Paolina-Havoc-Pilar', 0, 0, '7HO12645', 0, 15),
+(835, 414033, '2020-07-17', 0, 1, 2, 'Marisol-Cristy-Doc-Cristal', 0, 272795, '250HO12961', 0, 15),
+(836, 414034, '2020-09-10', 58203, 1, 2, 'Marisol-Melina-CrownRed-Mandy', 0, 272767, '7HO14460', 0, 15),
+(837, 414224, '2021-03-28', 58231, 1, 2, 'Marisol-Calipso-CrownRed-Camila', 0, 318409, '7HO14460', 0, 15),
+(838, 414249, '2021-04-10', 58232, 1, 2, 'Marisol-Catalina-Schmidt-Coraline', 0, 272776, '7HO12863', 0, 15),
+(839, 414308, '2021-06-27', 58252, 1, 2, 'Marisol-Magdalena-Mabon-Micaela', 0, 272803, '7HO12829', 0, 15),
+(840, 414374, '2021-08-14', 58258, 1, 2, 'Marisol-Cloisa-Headliner-Clois', 0, 272773, '7HO11419', 0, 15),
+(841, 414487, '2021-10-08', 58264, 1, 2, 'Marisol-Madelin-LusterP-Mady', 0, 347994, '7HO14160', 0, 15),
+(842, 414488, '2021-10-11', 58263, 1, 2, 'Marisol-Clarisa-LusterP-Clony', 0, 348063, '7HO14160', 0, 15),
+(843, 431124, '2020-03-28', 0, 1, 2, 'Marisol-Puka-Chrome-Paris', 0, 272765, '7HO12464', 0, 15),
+(844, 431254, '2020-06-23', 0, 1, 2, 'Marisol-Carelin-Havoc-Candy', 0, 272766, '7HO12645', 0, 15),
+(845, 474803, '2021-11-01', 58267, 1, 2, 'Marisol-Maldina-Ascender-Mandy', 0, 272767, '7HO12616', 0, 15),
+(846, 474923, '2021-12-13', 63218, 4, 2, 'Marisol-Luana-LusterP-Lia', 0, 0, '7HO14160', 0, 15),
+(847, 474924, '2021-12-27', 63219, 4, 2, 'Marisol-Lilo-Bradnick-Lesly', 0, 0, '7HO10999', 0, 15),
+(848, 474986, '2022-03-04', 63233, 1, 2, 'Marisol-Caridad-LusterP-Cecy', 0, 272786, '7HO14160', 0, 15),
+(849, 474987, '2022-02-21', 58277, 1, 2, 'Marisol-Lais-Hancock-Leidy', 0, 272772, '250HO14579', 0, 15),
+(850, 503873, '2022-12-18', 63226, 1, 2, 'Marisol-Betsabe-Jules-Belinda', 0, 272770, '7HO15002', 0, 15),
+(851, 503878, '2023-02-20', 63237, 1, 2, 'Marisol-Caterina-RainyRed-Clony', 0, 348063, '250HO15316', 0, 15),
+(852, 521773, '2022-05-15', 58280, 1, 2, 'Marisol-Candida-LusterP-Crisa', 0, 347940, '507HO14160', 0, 15),
+(853, 521774, '2022-05-21', 58289, 1, 2, 'Marisol-Coral-Bradnick-Coraline', 0, 272776, '7HO10999', 0, 15),
+(854, 521835, '2022-06-12', 58293, 1, 2, 'Marisol-Bata-LusterP-Bamby', 0, 318408, '7HO14160', 0, 15),
+(855, 521836, '2022-07-03', 58295, 1, 2, 'Marisol-Caeli-RompenRed-Colorina', 0, 272768, '7HO15427', 0, 15),
+(856, 521837, '2022-06-19', 0, 4, 2, 'Marisol-Prisca-LusterP-Palomita', 0, 0, '7HO14160', 0, 15),
+(857, 521862, '2022-08-02', 63254, 4, 2, 'Marisol-Samira-ZekePRed-Sami', 0, 0, '7HO13921', 0, 15),
+(858, 521873, '2022-08-16', 63202, 1, 2, 'Marisol-Beatriz-Captivating-Bahia', 0, 272917, '250HO15156', 0, 15),
+(859, 521968, '2022-11-07', 63216, 1, 2, 'Marisol-Magnolia-RustyRed-Meche', 0, 277274, '7HO13826', 0, 15),
+(860, 539031, '2023-04-18', 63244, 1, 2, 'Marisol-Crisandra-RainyRed-Crisa', 0, 347940, '250HO15316', 0, 15),
+(861, 539232, '2023-04-19', 63246, 1, 2, 'Marisol-Mela-Tomek-Melina', 0, 414034, '7HO12657', 0, 15),
+(862, 539053, '2023-04-18', 65911, 1, 2, 'Marisol-Saly-RainyRed-Sandra', 0, 0, '250HO15316', 0, 15),
+(863, 539065, '2023-05-24', 63250, 1, 2, 'Marisol-Laila-RainyRed-Laidy', 0, 272772, '250HO15316', 0, 15),
+(864, 539132, '2023-07-01', 63255, 1, 2, 'Marisol-Cora-RainyRed-Colorina', 0, 272768, '250HO15316', 0, 15),
+(865, 539178, '2023-07-08', 63258, 1, 2, 'Marisol-Laila-BanjoP-Lina', 0, 368750, '7HO14694', 0, 15),
+(866, 539179, '2023-07-19', 63263, 1, 2, 'Marisol-Lafita-RickpRed-Lety', 0, 283058, '7HO15017', 0, 15),
+(867, 539205, '2023-08-25', 63274, 1, 2, 'Marisol-Cloe-RickPRed-Chandra', 0, 431125, '7HO15017', 0, 15),
+(868, 539206, '2023-09-12', 63277, 1, 2, 'Marisol-Cala-Sunrise-Carelin', 0, 431254, '7HO15225', 0, 15),
+(869, 539207, '2023-07-27', 0, 4, 2, 'Marisol-Serena-RickPRed-Sami', 0, 0, '0', 0, 15),
+(870, 539231, '2023-12-03', 0, 4, 2, 'Marisol-Cecia', 0, 0, '0', 0, 15),
+(871, 539238, '2023-10-10', 63282, 1, 2, 'Marisol-Blasa-Talon-Bahia', 0, 272917, '7HO15457', 0, 15),
+(872, 14968, '2016-10-20', 50330, 3, 2, 'Mafloren-Lucifer-Montross-Jovita', 0, 12794, '7HO12165', 0, 4),
+(873, 14979, '2016-02-25', 50369, 3, 2, 'Mafloren-Candelaria-Halogen-Camila', 0, 14909, '7HO12008', 0, 4),
+(874, 14981, '2017-01-23', 50380, 1, 2, 'Mafloren-Estelita-Brisco-Fabi', 0, 13571, '7HO10908', 0, 4),
+(875, 14982, '2014-11-02', 0, 3, 2, 'Mafloren-Mariquilla-Primetime-Pituca', 0, 12894, '7HO10501', 0, 4),
+(876, 277216, '2017-05-06', 51240, 3, 2, 'Mafloren-Maruja-Chrome-Domitila', 0, 13367, '7HO12464', 0, 4),
+(877, 279458, '2018-03-11', 52360, 1, 2, 'Mafloren-Chevela-Kenyon-Ely', 0, 13518, '7HO12769', 0, 4),
+(878, 279462, '2017-09-28', 52304, 7, 2, 'Mafloren-Irma-Kenyon-Isaura', 0, 14929, '7HO12769', 0, 4),
+(879, 283009, '2018-10-08', 54248, 1, 2, 'Mafloren-Evaliz-Petrone-Sandra', 0, 14990, '7HO11169', 0, 4),
+(880, 315912, '2019-03-18', 56214, 2, 2, 'Mafloren-Matilda-Kingboy-Margarita', 0, 14977, '7HO12198', 0, 4),
+(881, 348005, '2019-07-22', 56258, 1, 2, 'Mafloren-Teodosia-Petrone-Wendy', 0, 347986, '7HO11169', 0, 4),
+(882, 348007, '2019-07-29', 56274, 2, 2, 'Mafloren-Celestina-Reynold-Amalia', 0, 14928, '7HO12150', 0, 4),
+(883, 348101, '2019-09-20', 56299, 7, 2, 'Mafloren-Jovita-Bradnick-Juanita', 0, 14994, '7HO10999', 0, 4),
+(884, 353894, '2020-12-08', 59469, 2, 2, 'Mafloren-Rosa-LusterP-Samanta', 0, 14905, '7HO14160', 0, 4),
+(885, 368733, '2019-09-15', 56292, 2, 2, 'Mafloren-Reyna-Kenyon-Carolina', 0, 14899, '7HO12769', 0, 4),
+(886, 368734, '2019-10-10', 59442, 3, 2, 'Mafloren-Yoya-Petrone-Maruja', 0, 277216, '7HO11169', 0, 4),
+(887, 368808, '2019-11-29', 57924, 1, 2, 'Mafloren-Regina-Kenyon-Roxana', 0, 14970, '7HO12769', 0, 4),
+(888, 414116, '2019-10-11', 57903, 1, 2, 'Mafloren-Norma-Kingtut-Isidra', 0, 11102019, '7HO12726', 0, 4),
+(889, 414117, '2021-01-08', 59471, 2, 2, 'Mafloren-Mati-LusterP-Margarita', 0, 14977, '7HO14160', 0, 4),
+(890, 414118, '2021-01-09', 59485, 1, 2, 'Mafloren-Sara-LusterP-Romina', 0, 431276, '7HO14160', 0, 4),
+(891, 414185, '2021-03-27', 59492, 7, 2, 'Mafloren-Maria-Schmidt-Verito', 0, 14934, '7HO12863', 0, 4),
+(892, 414233, '2021-04-11', 59496, 2, 2, 'Mafloren-Luisa-Loyalty-Celia', 0, 348041, '7HO12690', 0, 4),
+(893, 414305, '2021-05-11', 60604, 1, 4, 'Mafloren-Eliza-Bankit-Estefania', 0, 230132, '7BS909', 0, 4),
+(894, 414311, '2021-05-22', 60613, 3, 2, 'Mafloren-Lusmery-BanjoP-Lucifer', 0, 14968, '7HO14694', 0, 4),
+(895, 414320, '2021-07-08', 60633, 2, 2, 'Mafloren-Riso-Cascade-Turca', 0, 277293, '7HO14401', 0, 4),
+(896, 414390, '2021-09-15', 60652, 1, 4, 'Mafloren-Zamba-Bosephus-Zabina', 0, 230481, '7BS852', 0, 4),
+(897, 414395, '2021-09-28', 60666, 2, 2, 'Mafloren-Ruth-LusterP-Azucena', 0, 14976, '7HO14160', 0, 4),
+(898, 431085, '2020-04-09', 57980, 2, 2, 'Mafloren-Bella-Doc-Casta', 0, 14966, '250HO12961', 0, 4),
+(899, 431087, '2020-05-08', 57956, 1, 2, 'Mafloren-Blanca-House-Sexi', 0, 279460, '7HO12978', 0, 4),
+(900, 431216, '2020-08-02', 59432, 3, 2, 'Mafloren-Agripina-Havoc-Carmela', 0, 14973, '7HO12645', 0, 4),
+(901, 431217, '2020-08-15', 59435, 2, 2, 'Mafloren-Lucy-Reflector-Carolina', 0, 14899, '7HO12105', 0, 4),
+(902, 431220, '2020-08-23', 59438, 3, 2, 'Mafloren-Rosalia-Reflector-Mariquilla', 0, 14982, '7HO12105', 0, 4),
+(903, 431247, '2020-08-28', 59441, 2, 1, 'Mafloren-Clarabella-Bradnick-Turca', 0, 277293, '7HO10999', 0, 4),
+(904, 474960, '2022-03-25', 61927, 3, 2, 'Mafloren-Gregoria-Renegade-Yoya', 0, 368734, '550HO14134', 0, 4),
+(905, 474996, '2022-02-04', 61911, 2, 2, 'Mafloren-Liliana-Renegade-Marilu', 0, 431278, '250HO14134', 0, 4),
+(906, 474997, '2022-01-08', 61912, 2, 2, 'Mafloren-Giovana-Spartacus-Greta', 0, 348039, '7HO14674', 0, 4),
+(907, 490246, '2022-12-18', 63151, 2, 2, 'Mafloren-Carlota-Captivating-Celestina', 0, 348007, '250HO15156', 0, 4),
+(908, 490248, '2022-12-26', 63153, 2, 2, 'Mafloren-Raquel-Captivating-Lucy', 0, 431217, '250HO15156', 0, 4),
+(909, 503938, '2023-03-15', 63182, 3, 2, 'Mafloren-Aylin-Alphabet-Angela', 0, 521722, '7HO14320', 0, 4),
+(910, 503942, '2020-05-27', 57995, 3, 2, 'Mafloren-Linda-Doc-Sisy', 0, 15000, '250HO12961', 0, 4),
+(911, 503943, '2023-02-20', 63171, 1, 2, 'Mafloren-Doris-Captivating-Sara', 0, 414118, '250HO15156', 0, 4),
+(912, 503945, '2023-01-10', 63161, 7, 2, 'Mafloren-Alicia-Captivating-Jovita', 0, 348101, '250HO15156', 0, 4),
+(913, 521711, '2019-07-16', 56266, 2, 2, 'Mafloren-Celina-Kenyon-Carina', 0, 14935, '7HO12769', 0, 4),
+(914, 521722, '2019-06-10', 56247, 3, 2, 'Mafloren-Angela-Kenyon-Mariquilla', 0, 14982, '7HO12769', 0, 4),
+(915, 521723, '2018-09-03', 54227, 2, 2, 'Mafloren-Greta-Kenyon-Gringa', 0, 14910, '7HO12769', 0, 4),
+(916, 521736, '2022-04-06', 63187, 2, 2, 'Mafloren-Nina-Reyna-Captivating', 0, 368733, '250HO15156', 0, 4),
+(917, 521785, '2022-06-16', 61999, 2, 2, 'Mafloren-Belinda-Captivating-Bella', 0, 431085, '250HO15156', 0, 4),
+(918, 521821, '2019-07-01', 56260, 7, 2, 'Mafloren-Isidra-Kenyon-Isaura', 0, 14929, '7HO12769', 0, 4),
+(919, 521845, '2022-07-15', 63110, 1, 2, 'Mafloren-Yayita-Captivating-Chevela', 0, 2794458, '250HO15156', 0, 4),
+(920, 521897, '2022-09-20', 63132, 2, 2, 'Mafloren-Alaska-Captivating-Amalia', 0, 14928, '250HO15156', 0, 4),
+(921, 521944, '2022-10-25', 63137, 1, 4, 'Mafloren-Karmina-Skyhigh-Julissa', 0, 521944, '7BS914', 0, 4),
+(922, 521985, '2022-11-15', 63144, 7, 2, 'Mafloren-Katy-Captivating-Flora', 0, 521996, '250HO15156', 0, 4),
+(923, 521996, '2020-08-24', 59453, 7, 2, 'Mafloren-Flora-Reflector-Carlota', 0, 272914, '7HO12105', 0, 4),
+(924, 539023, '2023-04-24', 63199, 3, 2, 'Mafloren-Domitila-Luszmery', 0, 414311, '7HO15457', 0, 4),
+(925, 539086, '2023-05-28', 65033, 2, 2, 'Mafloren-Arminda-Alphabet-Rosa', 0, 353894, '7HO14320', 0, 4),
+(926, 539145, '2023-07-14', 65061, 2, 2, 'Mafloren-Mary-Alphabet-Celina', 0, 521711, '7HO14320', 0, 4),
+(927, 539146, '2023-07-20', 65063, 1, 2, 'Mafloren-Aurora-Alphabet-Blanca', 0, 431087, '7HO14320', 0, 4),
+(928, 539221, '2023-10-20', 65097, 7, 2, 'Mafloren-Deysi-Roadster-Verito', 0, 14934, '250HO15026', 0, 4),
+(929, 539232, '2023-04-27', 65016, 7, 2, 'Mafloren-Sofia-Talon-Isidra', 0, 521821, '7HO15457', 0, 4),
+(930, 539244, '2023-11-11', 65804, 1, 2, 'Mafloren-Ariane-Roadster-Evaliz', 0, 283009, '250HO15026', 0, 4),
+(931, 548, '2014-12-20', 0, 4, 3, 'Mafloren-Soraya', 0, 0, '0', 0, 4),
+(932, 14908, '2014-02-01', 0, 4, 3, 'Mafloren-Luciana', 0, 0, '0', 0, 4),
+(933, 14948, '2015-12-18', 48205, 2, 3, 'Mafloren-Dudu-Miles-Dulcinea', 0, 402, '7JE886', 0, 4),
+(934, 14958, '2016-04-14', 48268, 3, 3, 'Mafloren-Rosita-Calypso-Alegra', 0, 556, '7JE1350', 0, 4),
+(935, 14978, '2016-12-17', 50365, 1, 3, 'Mafloren-Maruja-Calypso-Felicidad', 0, 14922, '7JE1350', 0, 4),
+(936, 14985, '2017-05-15', 51247, 1, 2, 'Mafloren-Gladiola-Barnabas-Dori', 0, 14946, '7JE1294', 0, 4),
+(937, 244347, '2015-12-20', 47706, 1, 3, 'Mafloren-Cacao-Irwin-Canela', 0, 511, '7JE1163', 0, 4),
+(938, 315992, '2019-03-20', 56201, 1, 2, 'Mafloren-Dayra-Barnabas-Delia', 0, 774732, '7JE1294', 0, 4),
+(939, 347977, '2019-06-26', 56253, 1, 3, 'Mafloren-Diana-Barnabas-Dori', 0, 14946, '7JE1294', 0, 4),
+(940, 348078, '2019-08-02', 56276, 1, 3, 'Mafloren-Agripina-Barnabas-Luciana', 0, 14908, '7JE1294', 0, 4),
+(941, 414184, '2021-03-15', 59491, 1, 3, 'Mafloren-Pinki-Chrome-Dayra', 0, 315992, '7JE5004', 0, 4),
+(942, 414312, '2021-05-29', 60621, 1, 3, 'Mafloren-Concepcion-Respect-Tiburcia', 0, 279446, '7JE1638', 0, 4),
+(943, 414340, '2021-07-29', 60636, 1, 3, 'Mafloren-Chuky-Respect-Cacao', 0, 244347, '7JE1638', 0, 4),
+(944, 431088, '2020-05-16', 57989, 1, 3, 'Mafloren-Buba-Chrome-Maruja', 0, 14972, '7JE5004', 0, 4),
+(945, 431090, '2020-05-23', 57994, 2, 3, 'Mafloren-Burbuja-Chrome-Dudu', 0, 14948, '7JE5004', 0, 4),
+(946, 431188, '2020-07-18', 59415, 1, 3, 'Mafloren-Yenny-Chrome-Gladiola', 0, 14985, '7JE5004', 0, 4),
+(947, 431189, '2020-07-25', 59421, 1, 3, 'Mafloren-Liza-Chrome-Amanda', 0, 277294, '7JE5004', 0, 4),
+(948, 431269, '2018-05-20', 52384, 1, 3, 'Mafloren-Mini-Barnabas-Rosita', 0, 14958, '7JE1294', 0, 4),
+(949, 474848, '2021-11-10', 60667, 1, 3, 'Mafloren-Flora-Chrome-Agripina', 0, 348078, '7JE5004', 0, 4),
+(950, 474849, '2021-11-17', 60682, 1, 1, 'Mafloren-Silvia-Megapower-Julissa', 0, 315996, '7JE5011', 0, 4),
+(951, 474909, '2022-01-05', 61904, 1, 3, 'Mafloren-Charito-Megapower-Pikachu', 0, 272825, '7JE5011', 0, 4),
+(952, 521735, '2019-08-20', 56286, 1, 3, 'Mafloren-Sarita-Barnabas-Chaparrita', 0, 14939, '7JE1294', 0, 4),
+(953, 521738, '2022-04-08', 61944, 1, 3, 'Mafloren-Bee-Kiawa-Sarita', 0, 521735, '7JE1617', 0, 4),
+(954, 521741, '2018-06-03', 52389, 1, 3, 'Mafloren-Amanda-Barnabas-Vicky', 0, 414, '7JE1294', 0, 4),
+(955, 521783, '2022-06-02', 61979, 1, 3, 'Mafloren-Alaya-Respect-Gladiola', 0, 14985, '507JE1638', 0, 4),
+(956, 521809, '2022-05-02', 61960, 2, 3, 'Mafloren-Norma-Kiawa-Burbuja', 0, 431090, '7JE1617', 0, 4),
+(957, 521846, '2022-07-20', 63111, 1, 3, 'Mafloren-Vicky-Kiawa-Yenny', 0, 431188, '7JE1617', 0, 4),
+(958, 521869, '2022-08-20', 63120, 1, 3, 'Mafloren-Maricucha-Benelli-Chaparrita', 0, 14939, '7JE1724', 0, 4),
+(959, 539098, '2023-06-11', 65037, 1, 3, 'Mafloren-Faby-Kiawa-Pinki', 0, 414184, '7JE1617', 0, 4),
+(960, 539175, '2023-09-07', 65080, 1, 3, 'Mafloren-Macarena-Graduate-Yenny', 0, 431188, '7JE1939', 0, 4),
+(961, 539176, '2023-09-23', 65084, 1, 4, 'Mafloren-Teofila-Rampage-Silvia', 0, 474849, '507BS905', 0, 4),
+(962, 539222, '2022-12-25', 65092, 1, 3, 'Mafloren-Rosmery-Kiawa-Dayra', 0, 315992, '7JE1617', 0, 4),
+(963, 539245, '2023-11-25', 65808, 3, 3, 'Mafloren-Marisol-Albion-Rosita', 0, 14958, '7JE1620', 0, 4),
+(964, 414474, '2021-09-28', 61379, 7, 2, 'P.Ancha-Ester-Eminent-Kusiy', 6021, 272931, '7HO14329', 0, 12),
+(965, 414485, '2021-10-04', 61383, 7, 2, 'P.Ancha-Eta-Eminent-Roki', 61383, 283045, '7HO14329', 0, 12),
+(966, 474877, '2021-11-07', 61608, 3, 2, 'P.Ancha-Lawa-LusterP-Body', 0, 368741, '7HO14160', 0, 12),
+(967, 474901, '2021-12-26', 61658, 3, 2, 'P.Ancha-Sola-Samuri-Mecha', 0, 272929, '7HO12897', 0, 12),
+(968, 503852, '2022-12-02', 63741, 3, 2, 'P.Ancha-Ropa-Renegade-Luna', 0, 414082, '550HO14134', 0, 12),
+(969, 503853, '2022-12-06', 63488, 7, 2, 'P.Ancha-Rilma-Renegade-Lili', 0, 414024, '550HO14134', 0, 12),
+(970, 503854, '2022-12-06', 63485, 7, 2, 'P.Ancha-Rut-Renegade-Lupe', 0, 414114, '550HO14134', 0, 12),
+(971, 503855, '2022-12-12', 63484, 7, 2, 'P.Ancha-Rina-Renegade-Kety', 0, 368763, '550HO14134', 0, 12),
+(972, 503856, '2022-12-15', 63489, 3, 2, 'P.Ancha-Layla-LusterP-Patri', 0, 277297, '7HO14160', 0, 12),
+(973, 503857, '2022-12-21', 63486, 7, 2, 'P.Ancha-Loyda-LusterP-Poli', 0, 279402, '7HO14160', 0, 12),
+(974, 503858, '2022-12-22', 63498, 7, 2, 'P.Ancha-Linda-LusterP-Bisa', 0, 368738, '7HO14160', 0, 12),
+(975, 503859, '2022-12-25', 63709, 2, 2, 'P.Ancha-Casta-Captivating-Moly', 0, 431230, '250HO15156', 0, 12),
+(976, 503897, '2023-01-07', 63713, 7, 2, 'P.Ancha-Mika-Mick-Roky', 0, 283045, '250HO14407', 0, 12),
+(977, 503898, '2023-01-07', 63708, 7, 2, 'P.Ancha-CaÃ±a-Captivating-Rita', 0, 348084, '250HO15156', 0, 12),
+(978, 503899, '0003-01-14', 63711, 3, 2, 'P.Ancha-Rika-Renegade-Luci', 0, 414151, '550HO14134', 0, 12),
+(979, 503900, '2023-01-11', 63715, 3, 2, 'P.Ancha-Royal-Renegade-Lina', 0, 414111, '550HO14134', 0, 12),
+(980, 503901, '2023-01-15', 63716, 7, 2, 'P.Ancha-Remi-Renegade-Lana', 0, 414180, '550HO14134', 0, 12),
+(981, 503915, '2023-02-02', 63741, 3, 2, 'P.Ancha-Lucia-Logistics-Gota', 0, 315929, '250HO15208', 0, 12),
+(982, 503916, '2023-02-08', 63739, 7, 2, 'P.Ancha-Love-Logistics-Hoja', 0, 368765, '250HO15208', 0, 12),
+(983, 503939, '2023-03-02', 63758, 3, 2, 'P.Ancha-Roka-Magnitude-Lira', 0, 414160, '7HO14792', 0, 12),
+(984, 503940, '2023-03-03', 63759, 7, 2, 'P.Ancha-Lilia-Logistics-Eva', 0, 414209, '250HO15208', 0, 12),
+(985, 503941, '2023-03-03', 63752, 3, 2, 'P.Ancha-Lasy-Logistics-Rudy', 0, 348049, '250HO15208', 0, 12),
+(986, 503946, '0003-02-08', 63744, 7, 2, 'P.Ancha-Suci-Samuri-Bea', 0, 368736, '7HO12897', 0, 12),
+(987, 503947, '2023-02-12', 63746, 3, 2, 'P.Ancha-Sara-Samuri-Zalay', 0, 414019, '7HO12897', 0, 12),
+(988, 503948, '2023-02-14', 63748, 3, 2, 'P.Ancha-Clave-Coffe-Ema', 0, 414208, '250HO14310', 0, 12),
+(989, 503949, '2023-02-17', 63747, 7, 2, 'P.Ancha-Clara-Coffee-Zabel', 0, 414206, '250HO14310', 0, 12),
+(990, 503950, '2023-02-25', 63750, 7, 2, 'P.Ancha-Mery-Magnitude-Pulpo', 0, 315908, '7HO14792', 0, 12),
+(991, 503951, '2023-02-28', 63760, 7, 2, 'P.Ancha-Mony-Magnitude-Zeyna', 0, 503869, '7HO14792', 0, 12),
+(992, 521703, '2022-02-27', 62314, 2, 2, 'P.Ancha-Ruby-Eminent-Pinky', 0, 347979, '507HO14329', 0, 12),
+(993, 521704, '2022-03-03', 62312, 7, 2, 'P.Ancha-Luz-LusterP-Ray', 0, 283048, '7HO14160', 0, 12),
+(994, 521706, '2022-03-07', 62322, 3, 2, 'P.Ancha-Lama-LusterP-Holme', 0, 368766, '507HO14160', 0, 12),
+(995, 521745, '2022-04-29', 62369, 7, 2, 'P.Ancha-Masa-Mick-Zulma', 0, 431070, '250HO14407', 0, 12),
+(996, 521746, '2022-04-29', 62371, 3, 2, 'P.Ancha-Muyu-Mick-Playa', 0, 318442, '250HO14407', 0, 12),
+(997, 521747, '2022-04-29', 62361, 3, 2, 'P.Ancha-Lenci-LusterP-RomaRed', 0, 272856, '7HO14160', 0, 12),
+(998, 521750, '2022-05-08', 623787, 3, 2, 'P.Ancha-Sofi-Samuri-Bania', 0, 431068, '7HO12897', 0, 12),
+(999, 521826, '2022-06-21', 62408, 3, 2, 'P.Ancha-Loma-LusterP-Raly', 0, 347978, '507HO14160', 0, 12),
+(1000, 521828, '2022-06-25', 62400, 7, 2, 'P.Ancha-Laci-LusterP-Boa', 0, 431155, '507HO14160', 0, 12),
+(1001, 521832, '2022-06-11', 62388, 7, 2, 'P.Ancha-Sumo-Samuri-Haya', 0, 431223, '507HO12897', 0, 12),
+(1002, 521850, '2022-07-22', 62436, 1, 2, 'P.Ancha-Sulfa-Samuri-Para', 0, 318444, '7HO12897', 0, 12),
+(1003, 521851, '2022-07-29', 62449, 3, 2, 'P.Ancha-Lago-LusterP-Barni', 0, 431157, '7HO14160', 0, 12),
+(1004, 521878, '2022-08-01', 62447, 7, 2, 'P.Ancha-Sima-Samuri-Zami', 0, 431156, '7HO12897', 0, 12),
+(1005, 521879, '2022-08-03', 62451, 7, 2, 'P.Ancha-Safi-Samuri-Magui', 0, 431222, '7HO12897', 0, 12),
+(1006, 521880, '2022-08-11', 62455, 7, 2, 'P.Ancha-Sonda-Samuri-Blak', 0, 431066, '7HO12897', 0, 12),
+(1007, 521881, '2022-08-23', 62464, 7, 2, 'P.Ancha-Soli-Samuri-Maiz', 4522, 431160, '7HO12897', 0, 12),
+(1008, 521882, '2022-08-29', 62473, 1, 2, 'P.Ancha-Sapi-Samuri-Paris', 4622, 277240, '7HO12897', 0, 12),
+(1009, 521903, '2022-09-06', 62477, 7, 2, 'P.Ancha-Suma-Samuri-Randy', 62477, 283049, '7HO12897', 0, 12),
+(1010, 521904, '2022-09-14', 62483, 7, 2, 'P.Ancha-Later-LusterP-Holi', 2248, 431262, '7HO14160', 0, 12),
+(1011, 521905, '2022-09-18', 62491, 7, 2, 'P.Ancha-Santa-Samuri-Bata', 0, 431225, '7HO12897', 0, 12),
+(1012, 521906, '2022-09-19', 62486, 1, 2, 'P.Ancha-Lia-LusterP-Zony', 2250, 431159, '7HO14160', 0, 12),
+(1013, 521907, '2022-09-20', 62495, 2, 2, 'P.Ancha-Secy-Samuri-Zary', 2251, 431266, '7HO12897', 0, 12),
+(1014, 521908, '2022-09-27', 64062, 7, 2, 'P.Ancha-Caly-Captivating-Zuri', 2252, 431267, '250HO15156', 0, 12),
+(1015, 521909, '2022-09-25', 62492, 7, 2, 'P.Ancha-Latex-LusterP-Hana', 2253, 431265, '7HO14160', 0, 12),
+(1016, 521910, '2022-09-27', 62499, 7, 2, 'P.Ancha-Saky-Samuri-Hand', 2254, 230440, '7HO12897', 0, 12),
+(1017, 521911, '2022-09-30', 62494, 7, 2, 'P.Ancha-Lea-LusterP-RamaRed', 2255, 431250, '7HO14160', 0, 12),
+(1018, 521912, '2022-09-30', 63411, 7, 2, 'P.Ancha-Rizo-Renegade-Hania', 63411, 431263, '550HO14130', 0, 12),
+(1019, 521953, '2022-10-11', 63417, 7, 2, 'P.Ancha-Leya-LusterP-Maya', 5722, 431224, '7HO14160', 0, 12),
+(1020, 521954, '2022-10-13', 63416, 7, 2, 'P.Ancha-RiÃ±a-Renegade-Tady', 5822, 414022, '550HO14134', 0, 12),
+(1021, 521956, '2022-10-18', 63423, 3, 2, 'P.Ancha-Celma-Captivating-Zumi', 6022, 414020, '250HO15156', 0, 12);
+INSERT INTO `animal` (`idAnimal`, `chb`, `fecha_nacimiento`, `nro_registro`, `categoria`, `raza`, `nombre`, `rp`, `chbmadre`, `naabpadre`, `estado`, `fincaID`) VALUES
+(1022, 521957, '2022-10-26', 63426, 7, 2, 'P.Ancha-Malta-Mick-Kina', 6122, 368704, '250HO14407', 0, 12),
+(1023, 521988, '2022-10-30', 63440, 3, 2, 'P.Ancha-Cielo-Captivating-May', 521988, 347981, '250HO15156', 0, 12),
+(1024, 521989, '2022-11-08', 63448, 7, 2, 'P.Ancha-Celia-Captivating-Tina', 6322, 414155, '250HO15156', 0, 12),
+(1025, 521990, '2022-11-10', 63429, 7, 2, 'P.Ancha-Cari-Cativating-Kutiy', 2264, 283043, '250HO15156', 0, 12),
+(1026, 521991, '2022-11-18', 63456, 3, 2, 'P.Ancha-Rebe-Renegade-Lila', 6522, 414074, '550HO14134', 0, 12),
+(1027, 521992, '2022-11-20', 63468, 7, 2, 'P.Ancha-Mata-Mick-Lima', 6622, 414081, '250HO14407', 0, 12),
+(1028, 521993, '2022-11-22', 63461, 7, 2, 'P.Ancha-Carla-Captivating-Zani', 6722, 414021, '250HO15156', 0, 12),
+(1029, 521994, '2022-11-26', 63465, 7, 2, 'P.Ancha-Rumi-Renegade-Tere', 6822, 414025, '550HO14134', 0, 12),
+(1030, 521995, '2022-11-28', 63453, 7, 2, 'P.Ancha-Reyli-Renegade-Lola', 6922, 414023, '550HO14134', 0, 12),
+(1031, 539003, '2023-03-06', 637596, 3, 2, 'P.Ancha-Maite-Mick-Pame', 1723, 315909, '250HO14407', 0, 12),
+(1032, 539004, '2023-03-07', 63772, 7, 2, 'P.Ancha-Moira-Magnitude-Lody', 1823, 414154, '7HO14792', 0, 12),
+(1033, 539005, '2023-03-11', 63775, 2, 2, 'P.Ancha-Mar-Magnitude-Lulu', 1923, 414073, '7HO14792', 0, 12),
+(1034, 539006, '2023-03-13', 63766, 7, 2, 'P.Ancha-Leydi-Logistics-Holl', 2023, 431058, '250HO15208', 0, 12),
+(1035, 539008, '2023-03-17', 63764, 3, 2, 'P.Ancha-Llave-Logistics-Kony', 2223, 431056, '250HO15208', 0, 12),
+(1036, 539009, '2023-03-20', 63777, 7, 2, 'P.Ancha-Letra-Logistics-Elin', 2323, 414253, '250HO15208', 0, 12),
+(1037, 539010, '2023-03-23', 63779, 1, 2, 'P.Ancha-Mirta-Magnitude-Elma', 2423, 414210, '7HO14792', 0, 12),
+(1038, 539011, '2023-03-29', 63794, 7, 2, 'P.Ancha-Maki-Magnitude-Zandi', 2523, 368761, '7HO14792', 0, 12),
+(1039, 539012, '2023-03-31', 63780, 3, 2, 'P.Ancha-Cely-Coffe-RemiRed', 2623, 414226, '250HO14310', 0, 12),
+(1040, 539026, '2023-05-01', 64008, 3, 2, 'P.Ancha-Saka-Samuri-RomaRed', 503892, 503892, '7HO12897', 0, 12),
+(1041, 539027, '2023-05-04', 64015, 7, 2, 'P.Ancha-Lexus-Logistics-Esli', 3423, 414151, '250HO15208', 0, 12),
+(1042, 539043, '2023-04-04', 63792, 7, 2, 'P.Ancha-Mita-Magnitude-Zulma', 2723, 431070, '7HO14792', 0, 12),
+(1043, 539044, '2023-04-17', 64001, 7, 2, 'P.Ancha-Coma-Coffe-Ena', 2823, 414283, '250HO14310', 0, 12),
+(1044, 539045, '2023-04-20', 64004, 3, 2, 'P.Ancha-Miel-Magnitude-Elif', 2923, 414252, '7HO14792', 0, 12),
+(1045, 539046, '2023-04-21', 64005, 7, 2, 'P.Ancha-Sumba-Samuri-Taki', 3023, 414026, '507HO12897', 0, 12),
+(1046, 539047, '2023-04-24', 64007, 7, 2, 'P.Ancha-Motul-Magnitude-Suna', 3123, 414254, '7HO14792', 0, 12),
+(1047, 539048, '2023-04-25', 64014, 1, 2, 'P.Ancha-Maday-Magnitude-Enar', 3223, 414288, '7HO14792', 0, 12),
+(1048, 539052, '2023-05-09', 64017, 7, 2, 'P.Ancha-Ceci-Coffee-Emi', 3523, 414281, '250HO14310', 0, 12),
+(1049, 539071, '2023-05-09', 64022, 7, 2, 'P.Ancha-Marle-Magnitude-Lety', 3623, 414255, '7HO14792', 0, 12),
+(1050, 539072, '2023-05-10', 64020, 3, 2, 'P.Ancha-Salta-Samuri-Bama', 2723, 368869, '7HO12897', 0, 12),
+(1051, 539073, '2023-05-11', 64021, 7, 2, 'P.Ancha-Milan-Magnitude-Bian', 3823, 368814, '7HO14792', 0, 12),
+(1052, 539074, '2023-05-20', 64029, 7, 2, 'P.Ancha-Coca-Coffee-Sami', 3923, 414289, '250HO14310', 0, 12),
+(1053, 539075, '2023-05-24', 64030, 1, 2, 'P.Ancha-Claro-Coffee-Lara', 4023, 414285, '250HO14310', 0, 12),
+(1054, 539076, '2023-05-28', 64032, 3, 2, 'P.Ancha-Chava-Coffee-Ela', 4123, 414286, '250HO14310', 0, 12),
+(1055, 539077, '2023-05-29', 64028, 7, 2, 'P.Ancha-Cata-Coffee-Zoe', 4223, 414205, '250HO14310', 0, 12),
+(1056, 539078, '2023-05-31', 64043, 3, 2, 'P.Ancha-Cliza-Coffee-Sol', 4323, 414284, '250HO14310', 0, 12),
+(1057, 539100, '2023-06-03', 64041, 7, 2, 'P.Ancha-Seja-Samuri-Zanit', 4423, 503868, '7HO12897', 0, 12),
+(1058, 539101, '2023-06-04', 64039, 3, 2, 'P.Ancha-Cola-Coffee-Zaida', 4523, 431152, '250HO14310', 0, 12),
+(1059, 539102, '2023-06-09', 64037, 7, 2, 'P.Ancha-Menta-Mick-Zair', 4623, 414207, '250HO14407', 0, 12),
+(1060, 539103, '2023-06-14', 64045, 3, 2, 'P.Ancha-Lupe-Logistics-Pony', 4723, 318485, '250HO15208', 0, 12),
+(1061, 539104, '2023-06-15', 15062023, 7, 2, 'P.Ancha-Crema-Coffee-Boa', 4823, 431155, '250HO14310', 0, 12),
+(1062, 539105, '2023-06-21', 64050, 3, 2, 'P.Ancha-Cilva-Coffee-Hola', 64050, 431059, '250HO14310', 0, 12),
+(1063, 539106, '2023-06-25', 64057, 7, 2, 'P.Ancha-Cloy-Coffee-Luka', 5023, 414355, '250HO14310', 0, 12),
+(1064, 539117, '2023-08-31', 64815, 7, 2, 'P.Ancha-Lety-LusterP-Selfi', 6323, 414468, '7HO14160', 0, 12),
+(1065, 539137, '2023-10-16', 64864, 2, 2, 'P.Ancha-Lua-Logistics-Lisi', 7423, 414500, '250HO15208', 0, 12),
+(1066, 5391448, '2023-07-11', 64067, 2, 2, 'P.Ancha-Chiva-Coffee-Ziza', 5123, 414354, '250HO14310', 0, 12),
+(1067, 539149, '2023-07-20', 64075, 3, 2, 'P.Ancha-Lazo-Logistics-Loba', 5223, 414358, '250HO15208', 0, 12),
+(1068, 539153, '2023-07-29', 64083, 3, 2, 'P.Ancha-Lola-Logistics-Extra', 5323, 414386, '250HO15208', 0, 12),
+(1069, 539154, '2023-07-31', 64089, 7, 2, 'P.Ancha-Lili-LusterP-Sera', 5423, 414385, '7HO14160', 0, 12),
+(1070, 539155, '2023-08-01', 64081, 7, 2, 'P.Ancha-Libra-Logistics-Zeth', 5523, 539155, '250HO15208', 0, 12),
+(1071, 539156, '2023-08-02', 64096, 3, 2, 'P.Ancha-Lanza-LusterP-Sama', 5623, 414357, '7HO14160', 0, 12),
+(1072, 539157, '2023-08-05', 64086, 3, 2, 'P.Ancha-Lulu-Logistics-Zully', 5723, 414352, '250HO15208', 0, 12),
+(1073, 539158, '2023-08-10', 64098, 3, 2, 'P.Ancha-Limba-Logistics-Lala', 5823, 414316, '250HO15208', 0, 12),
+(1074, 539159, '2023-08-13', 64805, 7, 2, 'P.Ancha-Lara-LusterP-Sika', 6023, 414384, '7HO14160', 0, 12),
+(1075, 539160, '2023-08-11', 64803, 3, 2, 'P.Ancha-Samba-Samuri-Edna', 5923, 414287, '7HO12897', 0, 12),
+(1076, 539161, '2023-08-17', 64802, 7, 2, 'P.Ancha-Llama-Logistics-Sole', 6123, 414356, '250HO15208', 0, 12),
+(1077, 539162, '2023-08-28', 64812, 3, 2, 'P.Ancha-Ley-Logistics-Liru', 6223, 414466, '250HO15208', 0, 12),
+(1078, 539177, '2023-09-06', 64831, 7, 2, 'P.Ancha-Liz-Logistics-Sosa', 6423, 414359, '250HO15208', 0, 12),
+(1079, 539197, '2023-09-12', 64832, 7, 2, 'P.Ancha-Lidu-Logistics-Leyla', 6523, 414497, '250HO15208', 0, 12),
+(1080, 539198, '2023-09-19', 64839, 3, 2, 'P.Ancha-Caro-Coffee-Layne', 6923, 414389, '250HO14310', 0, 12),
+(1081, 539199, '2023-09-21', 64833, 7, 2, 'P.Ancha-Lija-Logistics-Lupa', 7023, 414498, '250HO15208', 0, 12),
+(1082, 539200, '2023-09-24', 64857, 7, 2, 'P.Ancha-Ludo-Logistics-Luki', 7223, 414315, '250HO15208', 0, 12),
+(1083, 539201, '2023-09-23', 64843, 7, 2, 'P.Ancha-Call-Coffee-Eti', 67123, 414499, '250HO14310', 0, 12),
+(1084, 539202, '2023-09-29', 64860, 7, 2, 'P.Ancha-Carli-Coffee-Lena', 7323, 414470, '250HO14310', 0, 12),
+(1085, 539215, '2023-09-15', 64830, 7, 2, 'P.Ancha-Linfa-Logistics-Zira', 6623, 414351, '250HO15208', 0, 12),
+(1086, 539216, '2023-09-17', 672369, 7, 2, 'P.Ancha-Cafe-Coffee-Sinta', 6723, 414382, '250HO14310', 0, 12),
+(1087, 539217, '2023-09-18', 64841, 7, 2, 'P.Ancha-Cante-Coffee-Siri', 6823, 0, '250HO14310', 0, 12),
+(1088, 539264, '2023-11-09', 64887, 7, 2, 'P.Ancha-Cien-Coffee-Seni', 7523, 414021, '250HO14310', 0, 12),
+(1089, 539265, '2023-11-12', 64890, 7, 2, 'P.Ancha-Cami-Coffee-Lora', 7623, 414496, '250HO14310', 0, 12),
+(1090, 539266, '2023-11-12', 64888, 3, 2, 'P.Ancha-Lujan-Logistics-Loca', 7723, 474882, '250HO15208', 0, 12),
+(1091, 539267, '2023-11-12', 64871, 7, 2, 'P.Ancha-Candi-Coffee-Erli', 7823, 474876, '250HO14310', 0, 12),
+(1092, 539268, '2023-11-16', 64898, 7, 2, 'P.Ancha-Lau-Logistics-Mora', 7923, 474883, '250HO15208', 0, 12),
+(1093, 539269, '2023-11-25', 64900, 3, 2, 'P.Ancha-Luli-Logistics-Elsa', 8023, 414475, '250HO15208', 0, 12),
+(1094, 315937, '2019-01-14', 50792, 1, 2, 'H.Sofia-Marisol-Haisemberg-Mercedes', 0, 277184, '7HO12569', 0, 11),
+(1095, 368790, '2019-11-27', 56137, 1, 2, 'H.Sofia-Rosita-Loyalty-Rosmery', 0, 244370, '509HO12690', 0, 11),
+(1096, 414040, '2020-10-21', 56172, 2, 2, 'H.Sofia-Sara-Scenario-Cesi', 0, 14888, '7HO12615', 0, 11),
+(1097, 414061, '2020-10-27', 56178, 1, 2, 'H.Sofia-Mery-Aicon-Melina', 0, 277282, '507HO12422', 0, 11),
+(1098, 414131, '2021-01-01', 561836, 1, 2, 'H.Sofia-Rossy-CrownRed-Rosmery', 0, 244370, '7HO14460', 0, 11),
+(1099, 414213, '2021-02-27', 56193, 1, 2, 'H.Sofia-Lucia-Aicon-Lucy', 0, 222975, '507HO12422', 0, 11),
+(1100, 414228, '2021-03-21', 56195, 1, 2, 'H.Sofia-Marisa-Aicon-Marisol', 0, 315937, '507HO12422', 0, 11),
+(1101, 414235, '2021-05-26', 56199, 1, 2, 'H.Sofia-Lia-Butler-Linda', 0, 272864, '7HO12195', 0, 11),
+(1102, 414304, '2021-07-12', 60905, 1, 2, 'H.Sofia-Magdalena-Headliner-Matilde', 0, 774080, '7HO11419', 0, 11),
+(1103, 431014, '2020-03-11', 56152, 1, 2, 'H.Sofia-Luna-Zamboni-Lucy', 0, 222975, '7HO12837', 0, 11),
+(1104, 431015, '2020-04-20', 65156, 1, 2, 'H.Sofia-Lucero-Kenyon-Linda', 0, 272864, '7HO12769', 0, 11),
+(1105, 431040, '2020-05-07', 56161, 1, 2, 'H.Sofia-Liset-Zamboni-Laura', 0, 222864, '7HO12837', 0, 11),
+(1106, 431073, '2020-05-11', 56163, 1, 2, 'H.Sofia-Guara-Kingpin-Guadalupe', 0, 277201, '7HO12228', 0, 11),
+(1107, 431199, '2018-04-07', 50762, 1, 2, 'H.Sofia-Guadalupe-Kenyon-Gaby', 0, 277185, '7HO12769', 0, 11),
+(1108, 431200, '2014-03-11', 0, 1, 2, 'H.Sofia-Laura-ValorRed-Sofia', 0, 13700, '7HO11214', 0, 11),
+(1109, 431201, '2018-04-08', 51727, 2, 2, 'H.Sofia-Geiset-Gamma-Gardenia', 0, 14492, '7HO12723', 0, 11),
+(1110, 431236, '2020-09-01', 56165, 2, 2, 'H.Sofia-Mary-Headliner-Matilde', 0, 774080, '7HO11419', 0, 11),
+(1111, 431237, '2020-09-17', 56170, 1, 2, 'H.Sofia-Maya-Scenario-Magali', 0, 272837, '7HO12615', 0, 11),
+(1112, 474885, '2021-12-26', 60914, 2, 2, 'H.Sofia-Carmin-Grand-Celia', 0, 368791, '7HO13930', 0, 11),
+(1113, 503872, '2022-12-30', 60964, 2, 2, 'H.Sofia-Jimena-RompenRed-Gaiset', 0, 431201, '7HO15427', 0, 11),
+(1114, 503933, '2023-03-08', 60976, 1, 2, 'H.Sofia-Genova-Guara-RainyRed', 0, 431073, '250HO15316', 0, 11),
+(1115, 503934, '2023-03-18', 60978, 2, 2, 'H.Sofia-Sabina-RainyRed-Sara', 0, 414040, '250HO15316', 0, 11),
+(1116, 521728, '2022-04-04', 60925, 1, 2, 'H.Sofia-Shirley-Captivating-Silvia', 0, 774786, '250HO15156', 0, 11),
+(1117, 521729, '2022-04-19', 60927, 1, 2, 'H.Sofia-Rosalia-Bradnick-Rosita', 0, 368790, '507HO10999', 0, 11),
+(1118, 521771, '2022-05-12', 60930, 1, 2, 'H.Sofia-Lisbet-Pharo-Linda', 0, 272864, '250HO12975', 0, 11),
+(1119, 521781, '2022-06-06', 60935, 1, 2, 'H.Sofia-Sulma-LusterP-Susi', 0, 368792, '7HO14160', 0, 11),
+(1120, 521782, '2022-06-08', 60936, 1, 2, 'H.Sofia-Lurdes-LusterP-Luna', 0, 431014, '7HO14160', 0, 11),
+(1121, 521858, '2022-08-02', 60942, 1, 2, 'H.Sofia-Lorena-Bradnick-Lucero', 0, 431015, '507HO10999', 0, 11),
+(1122, 521892, '2022-09-23', 60679, 1, 2, 'H.Sofia-Simona-RompenRed-Senovia', 0, 431198, '7HO14527', 0, 11),
+(1123, 539091, '2023-06-01', 60998, 1, 2, 'H.Sofia-Melec-RickpRed-Mery', 0, 414061, '7HO15017', 0, 11),
+(1124, 539127, '2023-07-19', 65325, 4, 2, 'H.Sofia-Maribel-Mary', 0, 431236, '0', 0, 11),
+(1125, 539192, '2023-09-11', 60999, 1, 2, 'H.Sofia-Rocio-RickpRed-Rosita', 0, 368790, '7HO15017', 0, 11),
+(1126, 230184, '2017-06-04', 50726, 1, 3, 'H.Sofia-Juliana-Antidote-Judit', 0, 244491, '7JE1131', 0, 11),
+(1127, 272863, '2017-11-24', 50750, 1, 3, 'H.Sofia-Tatiana-Calypso-Tita', 0, 244492, '7JE1350', 0, 11),
+(1128, 368897, '2020-02-15', 56146, 1, 2, 'H.Sofia-Tere-Topeka-Teresa', 0, 387, '7JE1169', 0, 11),
+(1129, 414214, '2021-03-21', 56194, 1, 2, 'H.Sofia-Tania-Ronaldinho', 0, 2728693, '7JE1503', 0, 11),
+(1130, 414363, '2021-08-01', 60907, 1, 2, 'H.Sofia-Julia-Posterboy-Judit', 0, 244491, '7JE5043', 0, 11),
+(1131, 431013, '2020-03-07', 56151, 1, 3, 'H.Sofia-Talia-Barnabas-Tatiana', 0, 272863, '7JE1294', 0, 11),
+(1132, 539191, '2023-09-02', 60997, 1, 3, 'H.Sofia-Tita-Corsair-Talia', 0, 431013, '550JE1947', 0, 11);
 
 -- --------------------------------------------------------
 
@@ -697,9 +1268,18 @@ INSERT INTO `animal` (`idAnimal`, `chb`, `fecha_nacimiento`, `nro_registro`, `ca
 --
 
 CREATE TABLE `cruzamiento` (
+  `idCruzamiento` int(11) NOT NULL,
   `EventoID` int(11) NOT NULL,
   `ReproductorID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `cruzamiento`
+--
+
+INSERT INTO `cruzamiento` (`idCruzamiento`, `EventoID`, `ReproductorID`) VALUES
+(1, 6, 46),
+(2, 6, 46);
 
 -- --------------------------------------------------------
 
@@ -720,7 +1300,7 @@ CREATE TABLE `evento` (
 
 INSERT INTO `evento` (`idEvento`, `clave`, `descripcion`, `tipoevento`) VALUES
 (1, 'X', 'ExploraciÃ³n rectal', 1),
-(2, 'P', 'Parto normal', 1),
+(2, 'P', 'Parto', 1),
 (3, 'A', 'Aborto', 1),
 (4, 'Dg', 'DiagnÃ³stico de Gestacion', 1),
 (5, 'Md', 'Monta directa', 4),
@@ -746,7 +1326,10 @@ INSERT INTO `evento` (`idEvento`, `clave`, `descripcion`, `tipoevento`) VALUES
 (25, 'Adh', 'Adherencias.', 6),
 (26, 'Tum', 'Tumores', 7),
 (27, 'Sal', 'Salpingitis', 6),
-(28, 'Cerv', 'Cervicitis', 6);
+(28, 'Cerv', 'Cervicitis', 6),
+(29, 'Seca', 'Seca', 3),
+(30, 'Va', 'Vacunacion Reproductiva', 12),
+(31, 'Br', 'Vacuna Brucelosis', 12);
 
 -- --------------------------------------------------------
 
@@ -797,11 +1380,68 @@ INSERT INTO `finca` (`idFinca`, `nroPropietario`, `propietario`, `nroTacho`, `no
 
 CREATE TABLE `historia` (
   `idHIstoria` int(11) NOT NULL,
-  `fecha` int(11) NOT NULL,
-  `diagnostico` int(11) NOT NULL,
+  `fecha` date NOT NULL,
   `animalID` int(11) NOT NULL,
-  `eventoID` int(11) NOT NULL
+  `eventoID` int(11) NOT NULL,
+  `tratamientoID` int(11) NOT NULL,
+  `participanteID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `historia`
+--
+
+INSERT INTO `historia` (`idHIstoria`, `fecha`, `animalID`, `eventoID`, `tratamientoID`, `participanteID`) VALUES
+(1, '2021-07-25', 60, 6, 2, 6),
+(2, '2022-02-06', 60, 6, 2, 6),
+(3, '2022-11-15', 60, 2, 4, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `participante`
+--
+
+CREATE TABLE `participante` (
+  `idParticipante` int(11) NOT NULL,
+  `nroparticipante` int(11) NOT NULL,
+  `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `participante`
+--
+
+INSERT INTO `participante` (`idParticipante`, `nroparticipante`, `descripcion`) VALUES
+(1, 1, 'Wilder Villarroel'),
+(2, 2, 'Raul Carvajal'),
+(3, 3, 'Einer Gonzales'),
+(4, 4, 'ROBERT JALDIN'),
+(5, 5, 'LENNY SUAREZ'),
+(6, 6, 'CARLOS AGREDA');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `parto`
+--
+
+CREATE TABLE `parto` (
+  `idParto` int(11) NOT NULL,
+  `nroparto` int(11) NOT NULL,
+  `tipo` int(1) NOT NULL,
+  `sexo` int(11) NOT NULL,
+  `chbcria` int(11) NOT NULL,
+  `peso` float NOT NULL,
+  `EventoID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `parto`
+--
+
+INSERT INTO `parto` (`idParto`, `nroparto`, `tipo`, `sexo`, `chbcria`, `peso`, `EventoID`) VALUES
+(1, 1, 1, 1, 521979, 12, 2);
 
 -- --------------------------------------------------------
 
@@ -825,9 +1465,53 @@ CREATE TABLE `reproductor` (
 --
 
 INSERT INTO `reproductor` (`idReproductor`, `hba`, `apodo`, `nombre`, `rp`, `naab`, `raza`, `tiposervicio`) VALUES
-(2, 11314, 'MOGUL', '7HO11314 MOGUL', 2147483647, '7HO11314 ', 2, 1),
-(3, 10723, 'SPUR', '7HO10723 Spur', 66636663, '7HO10723 ', 2, 1),
-(4, 4444, 'ARTURO', '4444 ARTURO', 0, '0', 4, 2);
+(1, 0, 'apodo', 'nombre', 0, 'naab', 0, 0),
+(2, 5004, 'CHROME', 'CHROME-507JE5004', 1, '507JE5004', 3, 1),
+(3, 14160, 'LUSTER-P', 'LUSTER-P-507HO14160', 2, '507HO14160', 2, 1),
+(4, 1638, 'RESPECT', 'RESPECT-507JE1638', 3, '507JE1638', 3, 1),
+(5, 16179, 'BACKFIRE', 'BACKFIRE-507HO16179', 4, '507HO16179', 2, 1),
+(6, 1947, 'CORSAIR {5}', 'CORSAIR {5}-550J E 01947', 5, '550J E 01947', 3, 1),
+(7, 1939, 'GRADUATE', 'GRADUATE-507JE01939', 6, '507JE01939', 3, 1),
+(8, 905, 'RAMPAGE', 'RAMPAGE-507BS00905', 7, '507BS00905', 4, 1),
+(9, 1617, 'JX KIAWA {6}-P', 'JX KIAWA {6}-P-507JE01617', 8, '507JE01617', 3, 1),
+(10, 14579, 'HANCOCK', 'HANCOCK-550HO14579', 9, '550HO14579', 2, 1),
+(11, 924, 'TANK', 'TANK-579BS00924', 10, '579BS00924', 4, 1),
+(12, 15325, 'HANANS', 'HANANS-507HO15325', 11, '507HO15325', 2, 1),
+(13, 14132, 'LIBERTY-P', 'LIBERTY-P-507HO14132', 12, '507HO14132', 2, 1),
+(14, 15440, 'HANDY-RED', 'HANDY-RED-507HO15440', 13, '507HO15440', 2, 1),
+(15, 15085, 'PARFECT', 'PARFECT-7HO15085', 14, '7HO15085', 2, 1),
+(16, 16179, 'BACKFIRE', 'BACKFIRE-7HO16179', 15, '7HO16179', 2, 1),
+(17, 16304, 'CHOICES', 'CHOICES-250HO16304', 16, '250HO16304', 2, 1),
+(18, 16163, 'BURGOON', 'BURGOON-7HO16163', 17, '7HO16163', 2, 1),
+(19, 1617, 'JX KIAWA', 'JX KIAWA-7JE1617', 18, '7JE1617', 3, 1),
+(20, 1638, 'RESPECT', 'RESPECT-7JE1638', 19, '7JE1638', 3, 1),
+(21, 16174, 'RAITON', 'RAITON-7HO16174', 20, '7HO16174', 2, 1),
+(22, 12961, 'DOC', 'DOC-250HO12961', 21, '250HO12961', 2, 1),
+(23, 15325, 'HANANS', 'HANANS-7HO15325', 22, '7HO15325', 2, 1),
+(24, 15563, 'IMPACT', 'IMPACT-7HO15563', 23, '7HO15563', 2, 1),
+(25, 15825, 'REBEL-RED', 'REBEL-RED-7HO15825', 24, '7HO15825', 2, 1),
+(26, 133, 'REYNOLDS', 'REYNOLDS-9AY00133', 25, '9AY00133', 4, 1),
+(27, 449, 'ICE CAP', 'ICE CAP-7AN00449', 26, '7AN00449', 2, 1),
+(28, 14132, 'LIBERTY-P', 'LIBERTY-P-7HO14132', 27, '7HO14132', 2, 1),
+(29, 1620, 'ALBION', 'ALBION-7JE1620', 28, '7JE1620', 3, 1),
+(30, 1786, 'JX CARDIFF {4}', 'JX CARDIFF {4}-7JE1786', 29, '7JE1786', 3, 1),
+(31, 606, 'OVATION', 'OVATION-7AN00606', 30, '7AN00606', 2, 1),
+(32, 15094, 'REVELATION', 'REVELATION-7HO15094', 31, '7HO15094', 2, 1),
+(33, 1219, 'OLIVER-P', 'OLIVER-P-7JE01219', 32, '7JE01219', 3, 1),
+(34, 15217, 'CAPONE', 'CAPONE-250HO15217', 33, '250HO15217', 2, 1),
+(35, 924, 'TANK', 'TANK-9BS00924', 34, '9BS00924', 4, 1),
+(36, 14579, 'HANCOCK', 'HANCOCK-250HO14579', 35, '250HO14579', 2, 1),
+(37, 1822, 'FRINGE', 'FRINGE-7JE01822', 36, '7JE01822', 2, 1),
+(38, 929, 'PUMA', 'PUMA-9BS00929', 37, '9BS00929', 4, 1),
+(39, 12879, 'LIGHT MY FIRE', 'LIGHT MY FIRE-250HO12879', 38, '250HO12879', 2, 1),
+(40, 15225, 'SUNRISE', 'SUNRISE-7HO15225', 39, '7HO15225', 2, 1),
+(41, 16426, 'LASHIO-RED', 'LASHIO-RED-7HO16426', 40, '7HO16426', 2, 1),
+(42, 932, 'DESPERADO', 'DESPERADO-9BS00932', 41, '9BS00932', 4, 1),
+(43, 12978, 'HOUSE', 'HOUSE-7HO12978', 42, '7HO12978', 2, 1),
+(44, 14717, 'PENSIVE-P', 'PENSIVE-P-250HO14717', 43, '250HO14717', 2, 1),
+(45, 1887, 'MADDUX', 'MADDUX-7JE01887', 44, '7JE01887', 3, 1),
+(46, 11383, 'MORGAN', 'MORGAN 7HO11383 ', 2147483647, '7HO11383 ', 2, 1),
+(47, 15208, 'LOGISTICS', 'LOGISTICS-250HO15208', 2147483647, '250HO15208', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -837,10 +1521,19 @@ INSERT INTO `reproductor` (`idReproductor`, `hba`, `apodo`, `nombre`, `rp`, `naa
 
 CREATE TABLE `tratamiento` (
   `idTratamiento` int(11) NOT NULL,
-  `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `recomendacion` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
-  `eventoID` int(11) NOT NULL
+  `nrotratamiento` int(11) NOT NULL,
+  `descripcion` varchar(100) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `tratamiento`
+--
+
+INSERT INTO `tratamiento` (`idTratamiento`, `nrotratamiento`, `descripcion`) VALUES
+(1, 0, 'Ninguno'),
+(2, 1, 'PROSTAGLANDINA 15ML'),
+(3, 2, 'Pomos de Secado'),
+(4, 3, 'P+ADE');
 
 -- --------------------------------------------------------
 
@@ -886,6 +1579,7 @@ ALTER TABLE `animal`
 -- Indices de la tabla `cruzamiento`
 --
 ALTER TABLE `cruzamiento`
+  ADD PRIMARY KEY (`idCruzamiento`),
   ADD KEY `evento-cruzamiento` (`EventoID`),
   ADD KEY `Reproductor-cruzamiento` (`ReproductorID`);
 
@@ -908,7 +1602,22 @@ ALTER TABLE `finca`
 ALTER TABLE `historia`
   ADD PRIMARY KEY (`idHIstoria`),
   ADD KEY `animal-historia` (`animalID`),
-  ADD KEY `tratamiento-historia` (`eventoID`);
+  ADD KEY `tratamiento-historia` (`eventoID`),
+  ADD KEY `participante-historia` (`participanteID`),
+  ADD KEY `historia-tratamiento` (`tratamientoID`);
+
+--
+-- Indices de la tabla `participante`
+--
+ALTER TABLE `participante`
+  ADD PRIMARY KEY (`idParticipante`);
+
+--
+-- Indices de la tabla `parto`
+--
+ALTER TABLE `parto`
+  ADD PRIMARY KEY (`idParto`),
+  ADD KEY `Parto-Evento` (`EventoID`);
 
 --
 -- Indices de la tabla `reproductor`
@@ -920,8 +1629,7 @@ ALTER TABLE `reproductor`
 -- Indices de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  ADD PRIMARY KEY (`idTratamiento`),
-  ADD KEY `evento-tratamiento` (`eventoID`);
+  ADD PRIMARY KEY (`idTratamiento`);
 
 --
 -- Indices de la tabla `usuario`
@@ -937,12 +1645,17 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `animal`
 --
 ALTER TABLE `animal`
-  MODIFY `idAnimal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=596;
+  MODIFY `idAnimal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1133;
+--
+-- AUTO_INCREMENT de la tabla `cruzamiento`
+--
+ALTER TABLE `cruzamiento`
+  MODIFY `idCruzamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT de la tabla `evento`
 --
 ALTER TABLE `evento`
-  MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT de la tabla `finca`
 --
@@ -952,17 +1665,27 @@ ALTER TABLE `finca`
 -- AUTO_INCREMENT de la tabla `historia`
 --
 ALTER TABLE `historia`
-  MODIFY `idHIstoria` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idHIstoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `participante`
+--
+ALTER TABLE `participante`
+  MODIFY `idParticipante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT de la tabla `parto`
+--
+ALTER TABLE `parto`
+  MODIFY `idParto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `reproductor`
 --
 ALTER TABLE `reproductor`
-  MODIFY `idReproductor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idReproductor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT de la tabla `tratamiento`
 --
 ALTER TABLE `tratamiento`
-  MODIFY `idTratamiento` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idTratamiento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
@@ -982,8 +1705,8 @@ ALTER TABLE `animal`
 -- Filtros para la tabla `cruzamiento`
 --
 ALTER TABLE `cruzamiento`
-  ADD CONSTRAINT `evento-cruzamiento` FOREIGN KEY (`EventoID`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reproductor-cruzamiento` FOREIGN KEY (`ReproductorID`) REFERENCES `reproductor` (`idReproductor`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cruzamiento-evento` FOREIGN KEY (`EventoID`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cruzamiento-reproductor` FOREIGN KEY (`ReproductorID`) REFERENCES `reproductor` (`idReproductor`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `finca`
@@ -996,13 +1719,15 @@ ALTER TABLE `finca`
 --
 ALTER TABLE `historia`
   ADD CONSTRAINT `animal-historia` FOREIGN KEY (`animalID`) REFERENCES `animal` (`idAnimal`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `evento-historia` FOREIGN KEY (`eventoID`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `evento-historia` FOREIGN KEY (`eventoID`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `participante-historia` FOREIGN KEY (`participanteID`) REFERENCES `participante` (`idParticipante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tratamiento-historia` FOREIGN KEY (`tratamientoID`) REFERENCES `tratamiento` (`idTratamiento`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `tratamiento`
+-- Filtros para la tabla `parto`
 --
-ALTER TABLE `tratamiento`
-  ADD CONSTRAINT `evento-tratamiento` FOREIGN KEY (`eventoID`) REFERENCES `evento` (`idEvento`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `parto`
+  ADD CONSTRAINT `Parto-Evento` FOREIGN KEY (`EventoID`) REFERENCES `evento` (`idEvento`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
