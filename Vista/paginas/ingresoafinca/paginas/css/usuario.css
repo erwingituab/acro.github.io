@@ -19,7 +19,7 @@
 	background: #f9f9f9;
 }
 .contenedor-form form .closebtn:hover {
-  color: black;
+  	color: black;
 }
 .contenedor-form form .titulo-frm{
 	width: 100%;
@@ -78,6 +78,13 @@
   display: none;
   margin: 10px 0px 0px 0px;
 }
+.contenedor-form form .alert2 {
+	padding: 20px;
+	background-color: #f44336;
+	color: white;
+	display: none;
+	margin: 10px 0px 0px 0px;
+  }
 .contenedor-form form .closebtn {
   margin-left: 15px;
   color: white;

@@ -94,6 +94,22 @@ class MdlAnimal
 			return null;
 		}
     }
+    static public function Mostrar_datos_animal_idAnimal($idAnimal)
+    {
+        $ConexionBD = new ConexionBD();
+		$conexion = $ConexionBD->Abrir();
+		$query = mysqli_query($conexion,"CALL sp_buscar_mostrar_animal_idAnimal('".$idAnimal."')");
+		$respuesta 	= mysqli_num_rows($query);
+		if ($respuesta > 0) 
+		{
+			$finca = mysqli_fetch_assoc($query);
+			return $finca;
+		}
+		else
+		{
+			return null;
+		}
+    }
     static public function BuscarMostrarAnimales($idFinca,$valor)
     {
         $ConexionBD = new ConexionBD();

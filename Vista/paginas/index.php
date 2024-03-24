@@ -78,10 +78,10 @@ if($rol==1)
       </div>
       <ul class="list__show">
           <li class="list__inside">
-            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
+            <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Granja</a>
           </li>
           <li class="list__inside">
-            <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
+            <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Granjas</a>
           </li>          
       </ul>
     </li>
@@ -163,10 +163,10 @@ if($rol==2)
           </div>
           <ul class="list__show">
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Granja</a>
               </li>
               <li class="list__inside">
-                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Fincas</a>
+                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/print.svg" class="list_img" >Granja</a>
               </li>          
           </ul>
         </li>
@@ -224,10 +224,10 @@ if($rol==2)
           </div>
           <ul class="list__show">
               <li class="list__inside">
-                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Finca</a>
+                <a href="finca" class="nav__link nav__link--inside"><img src="iconos/plus.svg" class="list_img" >Granja</a>
               </li>
               <li class="list__inside">
-                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Fincas</a>
+                <a href="fincahabilitada" class="nav__link nav__link--inside"><img src="iconos/file.svg" class="list_img" >Granjas</a>
               </li>          
           </ul>
         </li>

@@ -84,20 +84,20 @@
                     <div class="col-md-6 mb-3">
                     <label for="validationCustom01">Categoría</label>
                     <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Options</label>
-                    </div>
-                    <select class="custom-select" id="categoria" tabindex="4">
-                        <option value="" selected>Elija opción</option>
-                        <option value="1">TA</option>
-                        <option value="2">TB</option>
-                        <option value="3">TC</option>
-                        <option value="4">PPC</option>
-                        <option value="5">PAPI</option>
-                        <option value="6">PAPII</option>
-                        <option value="7">PP</option>
-                    </select>
-                    </div>
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+                        </div>
+                            <select class="custom-select" id="categoria" tabindex="4">
+                                <option value="" selected>Elija opción</option>
+                                <option value="1">TA</option>
+                                <option value="2">TB</option>
+                                <option value="3">TC</option>
+                                <option value="4">PPC</option>
+                                <option value="5">PAPI</option>
+                                <option value="6">PAPII</option>
+                                <option value="7">PP</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-6 mb-3">
                     <label for="validationCustom02">Raza</label>

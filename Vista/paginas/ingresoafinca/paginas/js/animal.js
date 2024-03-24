@@ -96,7 +96,8 @@ function mover(event, to)
 	index = Math.max(0,index + to);
 	list.eq(index).focus();
 }
-$(document).ready(function(){
+$(document).ready(function()
+{
 	var action = '';
 	$(document).on('click','#cerrar',function(){
 		document.getElementById('frmAnimal').reset();
@@ -251,7 +252,7 @@ $(document).ready(function(){
 	});
 	$(document).on('keyup','#buscaranimal',function(e)
 	{
-		var valor = $($(this)).val();
+		var valor = $($(this)).val();		
 		if (valor != "") 
 		{
 			BuscarMostrarAnimales(valor);
@@ -284,6 +285,29 @@ $(document).ready(function(){
 				}
 			});
 		}
+	});
+	$(document).on('click','.evento',function(){
+		var idAnimal = $(this).attr("id");
+		$.ajax({
+			url	: "../../../../Controlador/CtrlAnimal.php",
+			type: 'POST',
+			data: {action:'Mostrar_datos_animal_idAnimal',idAnimal:idAnimal},
+			success:function(respuesta)
+			{  
+				if (respuesta==1) 
+				{
+					if(window.history.replaceState)
+					{
+						window.history.replaceState(null, null, window.location.href);
+					}
+					window.location.href="fichaanimal";
+				}
+				else
+				{
+					console.log('Error ingreso finca.');
+				}
+			}
+		});
 	});
 	$(document).on('click','.update',function()
 	{
@@ -336,7 +360,7 @@ function ValidarAnimales()
 {
     var alerta = document.getElementById("alert");
 	var mensaje = document.getElementById("mensaje");
-	var strong = document.getElementById('strong')
+	var strong = document.getElementById('strong');
 
     var chb         = document.getElementById('chb').value;
     var fnacimiento = document.getElementById('fnacimiento').value;

@@ -57,7 +57,7 @@ function mover(event, to) {
 $(document).ready(function(event){
     var action = "";
     $(document).on('click','#btnmodal',function(){
-        $("#exampleModalLongTitle").text("Registrar Evento");
+        $("#exampleModalLongTitle").text("REGISTRAR EVENTO");
 		document.getElementById("clave").focus();
 		document.getElementById('frmEvento').reset();
         action="Registrar";
@@ -65,7 +65,7 @@ $(document).ready(function(event){
     });
     $(document).on('click','#btnclose',function(){
         document.getElementById('frmEvento').reset();
-        $("#exampleModalLongTitle").text("Registrar Evento");
+        $("#exampleModalLongTitle").text("REGISTRAR EVENTO");
         action="Registrar";
     });    
     $(document).on('click','#submit',function(){       

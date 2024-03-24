@@ -2,7 +2,7 @@
 <div class="contenedor-form">
 	<form name="frmFinca" method="post" id="frmFinca">
 		<div class="titulo-frm">			
-			<h1 id="titulo">Finca</h1>
+			<h1 id="titulo">Granjas</h1>
 		</div>
 		<div class="input">
 			<label for="nropropietario">Nro. Propietario</label>
@@ -14,11 +14,11 @@
 			<input type="text" id="propietario" placeholder="Ingrese nombres y apellidos" tabindex="2">
 		</div>
 		<div class="input">
-			<label for="nombre">Nro. Finca</label>
+			<label for="nombre">Nro. Granja</label>
 			<input type="text" id="nrofinca" placeholder="Ingrese nro. tacho" tabindex="3">
 		</div>
 		<div class="input">
-			<label for="telefono">Nombre Finca</label>
+			<label for="telefono">Nombre de Granja</label>
 			<input type="text" id="finca" placeholder="Ingrese nombre de finca" tabindex="4">
 		</div>
 		<div class="input">
@@ -52,8 +52,8 @@
 				<thead>
 					<th>N°</th>
 					<th>Nombre Propietario</th>
-					<th>N° Finca</th>
-					<th>Nombre Finca</th>
+					<th>N° Granja</th>
+					<th>Nombre Granja</th>
 					<th>Teléfono</th>
 					<th>Dirección</th>				
 					<th>Acción</th>

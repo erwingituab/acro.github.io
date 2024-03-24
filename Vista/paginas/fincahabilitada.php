@@ -5,7 +5,7 @@
 			<div class="input">
 				<input type="text" placeholder="Buscar propietario o finca" id="buscarfinca"><img src="iconos/buscar.svg" alt="">
 			</div>	
-			<p>FINCAS HABILITADAS</p>	
+			<p>GRANJAS HABILITADAS</p>	
 			<ul class="salida">
 				<li><a href="" class="pdf"><img src="iconos/pdf.svg" alt="pdf"></a></li>				
 				<li><a href="" class="print"><img src="iconos/print.svg" alt="pdf"></a></li>
@@ -16,8 +16,8 @@
 				<thead>
 					<th>N° Propietario.</th>
 					<th>Nombre Propietario</th>
-					<th>N° Finca</th>
-					<th>Nombre Finca</th>
+					<th>N° Granja</th>
+					<th>Nombre Granjas</th>
 					<th>Teléfono</th>
 					<th>Dirección</th>				
 					<th>Acción</th>

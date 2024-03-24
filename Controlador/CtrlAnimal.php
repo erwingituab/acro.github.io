@@ -23,6 +23,10 @@ if (isset($_POST['action']) && $_POST['action']=="Mostrar_datos_animal_chb")
 {
 	echo CtrlAnimal::Mostrar_datos_animal_chb();
 }
+if (isset($_POST['action']) && $_POST['action']=="Mostrar_datos_animal_idAnimal") 
+{
+	echo CtrlAnimal::Mostrar_datos_animal_idAnimal();
+}
 class CtrlAnimal
 {
     static public function Registrar()
@@ -99,6 +103,33 @@ class CtrlAnimal
             $_SESSION['rp'] 		    = $respuesta['rp'];
             $_SESSION['chbmadre'] 		= $respuesta['chbmadre'];
             $_SESSION['naabpadre'] 		= $respuesta['naabpadre'];
+            $_SESSION['estado']         = $respuesta['estado'];
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}      
+    }
+    static public function Mostrar_datos_animal_idAnimal()
+    {
+        require_once "../Modelo/MdlAnimal.php";
+        $respuesta = MdlAnimal::Mostrar_datos_animal_idAnimal($_POST['idAnimal']);
+        if ($respuesta != null) 
+		{	
+            session_start();			
+			$_SESSION['activeanimal']	= true;
+			$_SESSION['idAnimal'] 		= $respuesta['idAnimal'];
+			$_SESSION['chb']	        = $respuesta['chb'];
+			$_SESSION['fnacimiento'] 	= $respuesta['fecha_nacimiento'];
+			$_SESSION['nroregistro'] 	= $respuesta['nro_registro'];
+			$_SESSION['categoria'] 	    = $respuesta['categoria'];
+			$_SESSION['raza'] 		    = $respuesta['raza'];
+			$_SESSION['nombreanimal'] 	= $respuesta['nombre'];
+            $_SESSION['rp'] 		    = $respuesta['rp'];
+            $_SESSION['chbmadre'] 		= $respuesta['chbmadre'];
+            $_SESSION['naabpadre'] 		= $respuesta['naabpadre'];
+            $_SESSION['estado']         = $respuesta['estado'];
 			return 1;
 		}
 		else
